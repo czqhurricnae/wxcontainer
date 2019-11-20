@@ -25,11 +25,11 @@ export default class Table extends Component {
           </View>
           {tools.map((item, index, array) => (
             <View className='table_cell'>
-              <View className='td td1'>{index + 1}</View>
-              <View className='td td2'>{item.name}</View>
-              <View className='td td3'>{item.size}</View>
-              <View className='td td4'>{item.number}</View>
-              <View className='td td5'>{item.description}</View>
+              <View className='td td1' key={item.name}>{index + 1}</View>
+              <View className='td td2' key={item.name}>{item.name}</View>
+              <View className='td td3' key={item.name}>{item.size}</View>
+              <View className='td td4' key={item.name}>{item.number}</View>
+              <View className='td td5' key={item.name}>{item.description}</View>
             </View>)
           )}
         </View>

@@ -3,8 +3,8 @@ import { View } from '@tarojs/components'
 import { ClSearchBar } from "mp-colorui"
 import _ from 'lodash'
 
-import './index.scss'
-import Table from './table.jsx'
+import './search.scss'
+import Table from '../table/table.jsx'
 
 export default class Index extends Component {
   constructor () {

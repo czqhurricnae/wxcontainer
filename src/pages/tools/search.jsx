@@ -166,7 +166,7 @@ export default class Index extends Component {
           onSearch={this.handleSearchClick}
         />
         {projectsTools.map((item, index, array) => (
-          <Table {...item}></Table>)
+          <Table {...item} key={item.project_title}></Table>)
         )}
       </View>
     )

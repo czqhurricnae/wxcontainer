@@ -32,8 +32,12 @@ export default class Index extends Taro.Component {
     })
   }
 
-  handleClick = (value, index) => {
-    console.log(value, index)
+  handleClick = () => {
+    console.log('click')
+    Taro.navigateTo({
+      url:'/pages/tools/search'
+    })
+
   }
 
   render () {
@@ -45,7 +49,7 @@ export default class Index extends Taro.Component {
         <DocsHeader title='欢迎使用'></DocsHeader>
         {/* E Header */}
         <View className='panel-header'>
-          <View className='panel-header__icon'>
+          <View className='panel-header__icon' onclick={this.handleClick}>
             <Image src={searchImg} className='img' mode='widthFix'>
             </Image>
           </View>

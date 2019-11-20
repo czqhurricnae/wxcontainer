@@ -1,24 +1,19 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { ClSearchBar } from "mp-colorui"
-import { AtSearchBar, AtToast } from 'taro-ui'
 import _ from 'lodash'
 
 import './index.scss'
-import request from '../utils/request.jsx'
+import Table from './table.jsx'
 
 export default class Index extends Component {
-
-  config : Config = {
-    navigationBarTitleText: '工具查询'
-  }
-
   constructor () {
     super(...arguments)
     this.state = {
       source: [],
       results: [],
       segmentations: [],
+      projectsTools:[],
       value: '',
       open: false,
       isLoading: false}
@@ -26,10 +21,14 @@ export default class Index extends Component {
 
   componentWillMount () { }
 
-  componentDidMount () {
-    const projectsAPI = 'http://localhost:5000/api/projects/'
+  config : Config = {
+    navigationBarTitleText: '工具查询'
+  }
 
-    Taro.request({ url: projectsAPI, method: 'GET' })
+  componentDidMount () {
+    const projects_API = 'http://localhost:5000/api/projects/'
+
+    Taro.request({ url: projects_API, method: 'GET' })
       .then(res => {
         if (res.statusCode === 200) {
           this.setState({ source: res.data })
@@ -47,15 +46,19 @@ export default class Index extends Component {
   componentDidHide () { }
 
   handleSearchChange = (value) => {
-    this.setState({isLoading: true, value})
+    this.setState({ isLoading: true, value })
 
-    setTimeout(() => this.handleSegment(this.state.value))
+    setTimeout(() => this.handleSegment(value))
+
+    if (value === '') {
+      setTimeout(() => {
+        this.setState({isLoading: false, results: []})
+      })
+      return
+    }
 
     setTimeout(() => {
-      if (this.state.value.length < 1) return this.setState({
-        isLoading: false,
-        open: false
-      })
+      this.setState({isLoading: true})
 
       const isMatch = result => this.state.segmentations.every((item,
         index, array) => {
@@ -65,25 +68,25 @@ export default class Index extends Component {
       this.setState({
         isLoading: false,
         results: _.filter(this.state.source, isMatch),
-        open: Boolean(value.length)
+        open: Boolean(value.length),
+        value: value
       })
 
     }, 500)
   }
 
   handleSegment = (search) => {
-    const segmentationsAPI = 'http://localhost:5000/api/segmentations/'
+    const segmentations_API = 'http://localhost:5000/api/segmentations/'
 
     Taro.request({
-        url: segmentationsAPI,
+        url: segmentations_API,
         method: 'POST',
         headers: {
           'Content-type': 'application/json'
         },
-      data: JSON.stringify({ search })
+        data: JSON.stringify({ search })
     })
       .then(res => {
-        console.log(res.data)
         if (res.statusCode === 200) {
           this.setState({
             segmentations: res.data.filter((item,
@@ -97,22 +100,38 @@ export default class Index extends Component {
   }
 
   handleSelect = (index) => {
+    const tools_API = 'http://localhost:5000/api/tools/'
     const { results } = this.state
 
     Taro.showToast({
-      title: `您点击了 ${results[index].title} `,
+      title: `您点击了 ${results[index].title} .`,
       icon: 'none'
     })
 
-    this.handleSearch(results[index].title)
+    Taro.request({
+      url: tools_API + results[index].id,
+      method: 'GET',
+    })
+      .then(res => {
+        this.setState({projectsTools: res.data})
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+
     this.setState({open: false})
   }
 
-  handleSearch = (search) => {
-    const toolsAPI = 'http://localhost:5000/api/tools/'
+  handleSearchClick = (search) => {
+    const projects_tools_API = 'http://localhost:5000/api/projects/'
+
+    Taro.showToast({
+      title: `将会搜索所有关于  ${search} 的工具. `,
+      icon: 'none'
+    })
 
     Taro.request({
-      url: toolsAPI,
+      url: projects_tools_API,
       method: 'POST',
       headers: {
         'Content-type': 'application/json'
@@ -120,27 +139,36 @@ export default class Index extends Component {
       data: JSON.stringify({ search })
     })
       .then(res => {
-        console.log(res.data)
+        this.setState({projectsTools: res.data})
       })
       .catch((error) => {
         console.log(error)
       })
 
+    this.setState({open: false})
   }
 
   render () {
-    const { isLoading, open, results } = this.state
+    const { isLoading, open, results, projectsTools  } = this.state
 
     return (
-      <ClSearchBar
-        shape='round'
-        showLoading={isLoading}
-        placeholder='请输入搜索关键字'
-        onTouchResult={this.handleSelect}
-        onInput={this.handleSearchChange}
-        showResult={open}
-        result={results}
-      />
+      <View>
+        <ClSearchBar
+          shape='round'
+          bgColor='light-blue'
+          placeholder='请输入搜索关键字'
+          showLoading={isLoading}
+          showResult={open}
+          result={results}
+          onInput={_.debounce(this.handleSearchChange, 1000, {
+            leading: true})}
+          onTouchResult={this.handleSelect}
+          onSearch={this.handleSearchClick}
+        />
+        {projectsTools.map((item, index, array) => (
+          <Table {...item}></Table>)
+        )}
+      </View>
     )
   }
 }

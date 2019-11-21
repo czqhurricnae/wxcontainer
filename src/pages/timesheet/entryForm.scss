@@ -1,0 +1,19 @@
+.component-item {
+  &__input-group {
+    clear: both;
+    margin: 0 0 1em;
+  }
+
+  &__btn-group {
+    text-align: center;
+    align-self: inherit;
+    margin-bottom: 20px;
+
+    &__btn-item {
+      display: inline-flex;
+      flex-direction: row;
+      vertical-align: baseline;
+      margin: 0 .25em 0 0;
+    }
+  }
+}

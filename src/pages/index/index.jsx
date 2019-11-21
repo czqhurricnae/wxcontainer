@@ -6,6 +6,7 @@ import './index.scss'
 import searchImg from '../../assets/images/search.svg'
 import checkImg from '../../assets/images/check.svg'
 import userImg from '../../assets/images/user.svg'
+import maintenanceImg from '../../assets/images/maintenance.svg'
 
 
 export default class Index extends Taro.Component {
@@ -15,62 +16,59 @@ export default class Index extends Taro.Component {
 
   constructor () {
     super(...arguments)
+    this.state = { data: [
+      {
+         link: '/pages/tools/search'
+      },
+      {
+         link: '/pages/timesheet/entry'
+      },
+      {
+         link: '/pages/user/index'
+      }
+    ] }
   }
 
   onShareAppMessage () {
     return {
-      title: '导航页面',
+      title: '小助手',
       path: '/pages/index/index',
-      imageUrl: 'http://storage.360buyimg.com/mtd/home/share1535013100318.jpg'
+      imageUrl: maintenanceImg
     }
   }
 
-  gotoPanel = e => {
-    const { id } = e.currentTarget.dataset
+  handleClick = (item, index) => {
     Taro.navigateTo({
-      url: `/pages/panel/index?id=${id.toLowerCase()}`
-    })
-  }
-
-  handleClick = () => {
-    console.log('click')
-    Taro.navigateTo({
-      url:'/pages/tools/search'
+      url: this.state.data[index].link
     })
 
   }
 
   render () {
-    const { data } = this.state
-
     return (
       <View className='page'>
         {/* S Header */}
         <DocsHeader title='欢迎使用'></DocsHeader>
         {/* E Header */}
-        <View className='panel-header'>
-          <View className='panel-header__icon' onclick={this.handleClick}>
-            <Image src={searchImg} className='img' mode='widthFix'>
-            </Image>
-          </View>
-          <View className='panel-header__title'>工具查询</View>
-        </View>
 
-        <View className='panel-header'>
-          <View className='panel-header__icon'>
-            <Image src={checkImg} className='img' mode='widthFix'>
-            </Image>
-          </View>
-          <View className='panel-header__title'>工时录入</View>
-        </View>
-
-        <View className='panel-header'>
-          <View className='panel-header__icon'>
-            <Image src={userImg} className='img' mode='widthFix'>
-            </Image>
-          </View>
-          <View className='panel-header__title'>个人</View>
-        </View>
+        <AtGrid data={
+        [
+          {
+            image: searchImg,
+            value: '工具查询'
+          },
+          {
+            image: checkImg,
+            value: '工时录入'
+          },
+          {
+            image: userImg,
+            value: '个人中心'
+          }
+        ]
+        }
+           onClick={this.handleClick}
+        ></AtGrid>
       </View>
     )
   }

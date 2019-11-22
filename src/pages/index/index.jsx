@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { AtGrid } from 'taro-ui'
-import DocsHeader from '../doc-header'
+import DocsHeader from '../doc-header/index.jsx'
 import './index.scss'
 import searchImg from '../../assets/images/search.svg'
 import checkImg from '../../assets/images/check.svg'
@@ -21,7 +21,7 @@ export default class Index extends Taro.Component {
          link: '/pages/tools/search'
       },
       {
-         link: '/pages/timesheet/entry'
+         link: '/pages/timesheet/index'
       },
       {
          link: '/pages/user/index'

@@ -1,15 +1,23 @@
 import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { AtForm, AtInput, AtButton, AtCard } from 'taro-ui'
-import DocsHeader from '../doc-header'
+import DocsHeader from '../../doc-header/index.jsx'
+import { connect } from '@tarojs/redux'
+import { deleteForm, stashForm } from '../actions.jsx'
 import './entryForm.scss'
 
-export default class EntryForm extends Taro.Component {
+class EntryForm extends Taro.Component {
+  static defaultProps = {
+    onDelete: () => {},
+    onStash: () => {}
+  }
+
   constructor () {
     super (...arguments)
     this.state = {
       airplane: '',
-      time: ''
+      time: '',
+      isDisabled: false
     }
   }
 
@@ -19,7 +27,8 @@ export default class EntryForm extends Taro.Component {
 
   handleAirplaneChange = (value) => {
     this.setState({
-      airplane: value
+      airplane: value,
+      isDisabled: false
     })
 
     return value
@@ -27,24 +36,42 @@ export default class EntryForm extends Taro.Component {
 
   handleTimeChange = (value) => {
     this.setState({
-      time: value
+      time: value,
+      isDisabled: false
     })
 
     return value
   }
 
   handleSubmit = (event) => {
-    console.log(this.state)
+    const formID = this.props.formID
+    const datasheet = {airplane: this.state.airplane, time: this.state.time}
+
+    this.props.onStash(formID, datasheet)
+    this.setState({isDisabled: true})
   }
 
   handleReset = (event) => {
     this.setState({
       airplane: '',
       time: '',
+      isDisabled: false
     })
   }
 
+  handleDelete () {
+    const { formID } = this.props
+    Taro.atMessage({
+      'message': '已经删除',
+      'type': 'warning',
+    })
+    this.props.onDelete(formID)
+  }
+
   render () {
+    const { formID } = this.props
+
+    console.log(this.props.datasheets)
     return (
       <View className='page'>
         <View className='doc-body'>
@@ -52,7 +79,7 @@ export default class EntryForm extends Taro.Component {
             <View className='panel__content'>
               <View className='component-item'>
                 <AtCard
-                  title={1}
+                  title={String(formID)}
                   note='点击 + 号来继续添加表单.'
                 >
                   <AtForm
@@ -69,7 +96,7 @@ export default class EntryForm extends Taro.Component {
                         onChange={this.handleAirplaneChange}
                       />
                     </View>
-                    <View class="component-item__input-group">
+                    <View className='component-item__input-group'>
                       <AtInput
                         name='time'
                         title='工时'
@@ -81,13 +108,13 @@ export default class EntryForm extends Taro.Component {
                     </View>
                     <View className='component-item__btn-group'>
                       <View className='component-item__btn-group__btn-item'>
-                        <AtButton formType='submit' size='small'>删除</AtButton>
+                        <AtButton  size='small' onClick={this.handleDelete.bind(this)}>删除</AtButton>
                       </View>
                       <View className='component-item__btn-group__btn-item'>
                         <AtButton formType='reset' size='small'>重置</AtButton>
                       </View>
                       <View className='component-item__btn-group__btn-item'>
-                        <AtButton formType='submit' size='small'>提交</AtButton>
+                        <AtButton type='primary' formType='submit' size='normal' disabled ={this.state.isDisabled}>暂存</AtButton>
                       </View>
                     </View>
                   </AtForm>
@@ -100,3 +127,26 @@ export default class EntryForm extends Taro.Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return (
+    {
+      datasheets: state.datasheets
+    }
+  )
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return (
+    {
+      onDelete (formID) {
+        dispatch(deleteForm(formID))
+      },
+      onStash (formID, datasheet) {
+        dispatch(stashForm(formID, datasheet))
+      }
+    }
+  )
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EntryForm)

@@ -1,5 +1,8 @@
 import Taro, { Component } from '@tarojs/taro'
+import { Provider } from '@tarojs/redux'
 import Index from './pages/index'
+import TimeSheet from './pages/timesheet'
+import store from './pages/timesheet/store.jsx'
 
 import './app.scss'
 
@@ -14,6 +17,7 @@ class App extends Component {
   config = {
     pages: [
       'pages/index/index',
+      'pages/timesheet/index',
       'pages/tools/search'
     ],
     window: {
@@ -36,7 +40,10 @@ class App extends Component {
   // 请勿修改此函数
   render () {
     return (
-      <Index />
+      <Provider store={store}>
+        <Index />
+        <TimeSheet></TimeSheet>
+      </Provider>
     )
   }
 }

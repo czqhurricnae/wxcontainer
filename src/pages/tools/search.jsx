@@ -26,9 +26,9 @@ export default class Index extends Component {
   }
 
   componentDidMount () {
-    const projects_API = 'http://localhost:5000/api/projects/'
+    const projectsAPI = 'http://localhost:5000/api/projects/'
 
-    Taro.request({ url: projects_API, method: 'GET' })
+    Taro.request({ url: projectsAPI, method: 'GET' })
       .then(res => {
         if (res.statusCode === 200) {
           this.setState({ source: res.data })
@@ -76,10 +76,10 @@ export default class Index extends Component {
   }
 
   handleSegment = (search) => {
-    const segmentations_API = 'http://localhost:5000/api/segmentations/'
+    const segmentationsAPI = 'http://localhost:5000/api/segmentations/'
 
     Taro.request({
-        url: segmentations_API,
+        url: segmentationsAPI,
         method: 'POST',
         headers: {
           'Content-type': 'application/json'
@@ -100,7 +100,7 @@ export default class Index extends Component {
   }
 
   handleSelect = (index) => {
-    const tools_API = 'http://localhost:5000/api/tools/'
+    const toolsAPI = 'http://localhost:5000/api/tools/'
     const { results } = this.state
 
     Taro.showToast({
@@ -109,7 +109,7 @@ export default class Index extends Component {
     })
 
     Taro.request({
-      url: tools_API + results[index].id,
+      url: toolsAPI + results[index].id,
       method: 'GET',
     })
       .then(res => {
@@ -123,7 +123,7 @@ export default class Index extends Component {
   }
 
   handleSearchClick = (search) => {
-    const projects_tools_API = 'http://localhost:5000/api/projects/'
+    const projectsToolsAPI = 'http://localhost:5000/api/projects/'
 
     Taro.showToast({
       title: `将会搜索所有关于  ${search} 的工具. `,
@@ -131,7 +131,7 @@ export default class Index extends Component {
     })
 
     Taro.request({
-      url: projects_tools_API,
+      url: projectsToolsAPI,
       method: 'POST',
       headers: {
         'Content-type': 'application/json'

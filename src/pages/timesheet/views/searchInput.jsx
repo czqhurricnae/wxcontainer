@@ -49,8 +49,8 @@ export default class SearchInput extends Component {
 
       const isMatch = result => this.state.segmentations.every((item,
         index, array) => {
-        return new RegExp(item).test(result.title)
-      })
+          return new RegExp(item).test(result.title)
+        })
 
       this.setState({
         isLoading: false,
@@ -66,19 +66,19 @@ export default class SearchInput extends Component {
     const segmentationsAPI = 'http://localhost:5000/api/segmentations/'
 
     Taro.request({
-        url: segmentationsAPI,
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json'
-        },
-        data: JSON.stringify({ search })
+      url: segmentationsAPI,
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      data: JSON.stringify({ search })
     })
       .then(res => {
         if (res.statusCode === 200) {
           this.setState({
             segmentations: res.data.filter((item,
-            index, array) => (item.length > 1))
-            })
+              index, array) => (item.length > 1))
+          })
         }
       })
       .catch((error) => {
@@ -89,13 +89,14 @@ export default class SearchInput extends Component {
   handleSelect = (index) => {
     const toolsAPI = 'http://localhost:5000/api/tools/'
     const { results } = this.state
+    const resultValue = results[index].title
 
     Taro.showToast({
-      title: `您点击了 ${results[index].title} .`,
+      title: `您点击了 ${resultValue} .`,
       icon: 'none'
     })
 
-    this.setState({open: false, value: results[index].title})
+    this.setState({open: false, value: resultValue})
   }
 
   handleSearchClick = (value) => {
@@ -115,7 +116,15 @@ export default class SearchInput extends Component {
     const { isLoading, open, results  } = this.state
 
     return (
-      <View>
+      <View className='component-item__search-input-group'>
+        <View className='component-item__search-input-group__search-input-item'>
+          <View className='component-item__search-input-group__search-input-item__label'>
+            工作项目
+          </View>
+          <View className='component-item__search-input-group__search-input-item__value'>
+            {this.state.value}
+          </View>
+        </View>
         <ClSearchBar
           placeholder='搜索你的工作项目'
           showLoading={isLoading}
@@ -126,6 +135,7 @@ export default class SearchInput extends Component {
           onTouchResult={this.handleSelect}
           onSearch={this.handleSearchClick}
           onFocus={this.handleFocus}
+          searchType={'none'}
         />
       </View>
     )

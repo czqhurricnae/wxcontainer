@@ -5,6 +5,7 @@ import { connect } from '@tarojs/redux'
 import { deleteForm, stashForm } from '../actions.jsx'
 import DocsHeader from '../../doc-header/index.jsx'
 import SearchInput from './searchInput.jsx'
+import moment from 'moment'
 
 import './entryForm.scss'
 
@@ -20,7 +21,7 @@ class EntryForm extends Taro.Component {
     this.state = {
       airplane: '',
       time: '',
-      date: '',
+      date: moment(new Date()).format('YYYY-MM-DD'),
       isDisabled: false
     }
   }
@@ -90,7 +91,7 @@ class EntryForm extends Taro.Component {
                   title={String(formID)}
                   note='点击 + 号来继续添加表单.'
                 >
-                  <AtForm
+                  <AtForm className='component-item__form-group'
                     onSubmit={this.handleSubmit}
                     onReset={this.handleReset}
                   >
@@ -105,10 +106,8 @@ class EntryForm extends Taro.Component {
                       </Picker>
                     </View>
 
-                    <View className='component-item__search-input-group'>
-                      <SearchInput>
-                      </SearchInput>
-                    </View>
+                    <SearchInput>
+                    </SearchInput>
 
                     <View className='component-item__input-group'>
                       <AtInput

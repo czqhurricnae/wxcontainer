@@ -1,8 +1,7 @@
 import { Button, Input, ScrollView, Text, View } from "@tarojs/components";
 import Taro, { Component, pxTransform } from "@tarojs/taro";
-import { AtSearchBar } from 'taro-ui'
 import { BG_COLOR_LIST, TEXT_COLOR_LIST } from "../model";
-import { IProps } from "../searchBar";
+import { IProps } from "./searchBar";
 import ClCard from "../card";
 import ClSearchResult from "./searchResult";
 import { classNames } from "../index";
@@ -30,7 +29,7 @@ export default class ClSearchBar extends Component<IProps, IState> {
     showLoading: false,
     showResult: false,
     result: [],
-    onTouchResult: () => {}
+    onTouchResult: () => {},
   };
   state: IState = {
     showSearch: false,
@@ -69,6 +68,16 @@ export default class ClSearchBar extends Component<IProps, IState> {
     this.props.onInput && this.props.onInput(e.detail.value);
   }
 
+  onTouchResult(index) {
+    this.props.onTouchResult &&
+    this.props.onTouchResult(index);
+    this.setState({value: this.props.resultValue})
+  }
+
+  refInput = (node) => (
+    this.inputNode = node
+  )
+
   static onPreventProp(e) {
     e.stopPropagation();
   }
@@ -106,6 +115,7 @@ export default class ClSearchBar extends Component<IProps, IState> {
           value={this.state.value}
           onConfirm={this.onSearch.bind(this)}
           onInput={this.onInput.bind(this)}
+          ref={this.refInput}
         />
       </View>
     );
@@ -167,10 +177,7 @@ export default class ClSearchBar extends Component<IProps, IState> {
                     <ClSearchResult
                       result={this.props.result}
                       showLoading={this.props.showLoading}
-                      onTouchResult={index => {
-                        this.props.onTouchResult &&
-                          this.props.onTouchResult(index);
-                      }}
+                      onTouchResult={this.onTouchResult.bind(this)}
                     />
                   </ScrollView>
                 </ClCard>

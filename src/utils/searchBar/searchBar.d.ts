@@ -6,7 +6,7 @@ import {
   bgColorMoreType,
   lightBgColorType,
   BaseComponent
-} from "./baseType";
+} from "../baseType";
 
 export interface IProps extends BaseComponent {
   /**
@@ -38,31 +38,31 @@ export interface IProps extends BaseComponent {
    */
   searchType?: "button" | "text" | "none";
   /**
-   * 左边的图标组，可选类型请查看 Icon-iconName
+   * 左边的图标组,可选类型请查看 Icon-iconName
    */
   leftIcons?: iconType[];
   /**
-   * 背景色，可选类型请查看 默认色
+   * 背景色,可选类型请查看 默认色
    */
   bgColor?: bgColorType | bgColorMoreType | lightBgColorType;
   /**
-   * 右侧按钮颜色，可选类型请查看 默认色
+   * 右侧按钮颜色,可选类型请查看 默认色
    */
   rightButtonColor?: bgColorType | bgColorMoreType | lightBgColorType;
   /**
-   * type 为 text 时，右侧文字颜色，可选类型请查看 默认色-标准色
+   * type 为 text 时,右侧文字颜色,可选类型请查看 默认色-标准色
    */
   rightTextColor?: bgColorType;
   /**
-   * 图标点击事件，参数 index 为第几个图标
+   * 图标点击事件,参数 index 为第几个图标
    */
   onIconClick?: (index: number) => void;
   /**
-   * 搜索事件，参数 value 为输入的内容
+   * 搜索事件,参数 value 为输入的内容
    */
   onSearch?: (value: string) => void;
   /**
-   * 键盘输入事件， 参数 value 为输入的内容
+   * 键盘输入事件, 参数 value 为输入的内容
    */
   onInput?: (value: string) => void;
   /**
@@ -85,6 +85,10 @@ export interface IProps extends BaseComponent {
    * @param {number} index
    */
   onTouchResult?: (index: number) => void;
+ /**
+  * 点击搜索结果后, 通过 onTouchResult 函数传回, 显示在搜索框内
+  */
+  resultValue?: string;
 }
 
 export interface SearchBarProps extends IProps {}

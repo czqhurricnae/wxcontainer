@@ -2,11 +2,11 @@
   &__input-group {
     clear: both;
     margin: 0 0 1em;
+    border-bottom: 1PX solid #6190E8;
   }
 
   &__picker-group {
     clear: both;
-    margin: 0 0 1em;
 
     &__picker-item {
       position: relative;
@@ -14,7 +14,20 @@
       justify-content: space-between;
       padding: 24px;
 
-      &::before,
+      &::before {
+        top: 0;
+        bottom: auto;
+        content: '';
+        position: absolute;
+        top: auto;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        transform: scaleY(0.5);
+        transform-origin: center;
+        box-sizing: border-box;
+        pointer-events: none;
+      }
       &::after {
         content: '';
         position: absolute;
@@ -23,16 +36,12 @@
         right: 0;
         bottom: 0;
         transform: scaleY(0.5);
-        border-bottom: 1PX solid #d6e4ef;
+        border-bottom: 1.3PX solid #6190E8;
         transform-origin: center;
         box-sizing: border-box;
         pointer-events: none;
       }
 
-      &::before {
-        top: 0;
-        bottom: auto;
-      }
 
       &__label,
       &__value {

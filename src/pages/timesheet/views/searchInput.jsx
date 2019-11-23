@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { ClSearchBar } from "mp-colorui"
+import { ClSearchBar } from '../../../utils/searchBar/index.tsx'
 import _ from 'lodash'
 
 import './searchInput.scss'
@@ -107,6 +107,10 @@ export default class SearchInput extends Component {
     })
   }
 
+  handleFocus = () => {
+    this.setState({open: false})
+  }
+
   render () {
     const { isLoading, open, results  } = this.state
 
@@ -121,6 +125,7 @@ export default class SearchInput extends Component {
             leading: true})}
           onTouchResult={this.handleSelect}
           onSearch={this.handleSearchClick}
+          onFocus={this.handleFocus}
         />
       </View>
     )

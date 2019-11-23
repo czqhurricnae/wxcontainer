@@ -1,10 +1,13 @@
 import Taro from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View, Picker } from '@tarojs/components'
 import { AtForm, AtInput, AtButton, AtCard } from 'taro-ui'
-import DocsHeader from '../../doc-header/index.jsx'
 import { connect } from '@tarojs/redux'
 import { deleteForm, stashForm } from '../actions.jsx'
+import DocsHeader from '../../doc-header/index.jsx'
+import SearchInput from './searchInput.jsx'
+
 import './entryForm.scss'
+
 
 class EntryForm extends Taro.Component {
   static defaultProps = {
@@ -17,6 +20,7 @@ class EntryForm extends Taro.Component {
     this.state = {
       airplane: '',
       time: '',
+      date: '',
       isDisabled: false
     }
   }
@@ -68,6 +72,10 @@ class EntryForm extends Taro.Component {
     this.props.onDelete(formID)
   }
 
+  handleDateChange = (event) => {
+    this.setState({date: event.detail.value})
+  }
+
   render () {
     const { formID } = this.props
 
@@ -86,6 +94,22 @@ class EntryForm extends Taro.Component {
                     onSubmit={this.handleSubmit}
                     onReset={this.handleReset}
                   >
+                    <View className='component-item__picker-group'>
+                      <Picker mode='date' value={this.state.date} onChange={this.handleDateChange}>
+                        <View className='component-item__picker-group__picker-item'>
+                          <View className='component-item__picker-group__picker-item__label'>请选择日期</View>
+                          <View className='component-item__picker-group__picker-item__value'>
+                            {this.state.date}
+                          </View>
+                        </View>
+                      </Picker>
+                    </View>
+
+                    <View className='component-item__search-input-group'>
+                      <SearchInput>
+                      </SearchInput>
+                    </View>
+
                     <View className='component-item__input-group'>
                       <AtInput
                         name='airplane'
@@ -96,6 +120,7 @@ class EntryForm extends Taro.Component {
                         onChange={this.handleAirplaneChange}
                       />
                     </View>
+
                     <View className='component-item__input-group'>
                       <AtInput
                         name='time'

@@ -5,7 +5,6 @@ import _ from 'lodash'
 
 import './searchInput.scss'
 
-
 export default class SearchInput extends Component {
   constructor () {
     super(...arguments)

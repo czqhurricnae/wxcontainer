@@ -9,7 +9,6 @@ import store from './store.jsx'
 
 import './dataEntry.scss'
 
-
 @connect((state) => ({
   formList: state.formList,
   datasheets: state.datasheets

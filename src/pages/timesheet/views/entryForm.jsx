@@ -9,7 +9,6 @@ import moment from 'moment'
 
 import './entryForm.scss'
 
-
 class EntryForm extends Taro.Component {
   static defaultProps = {
     onDelete: () => {},

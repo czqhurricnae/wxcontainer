@@ -2,12 +2,13 @@ import Taro from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { AtGrid } from 'taro-ui'
 import DocsHeader from '../doc-header/index.jsx'
-import './index.scss'
+import Profile from '../profile/index.jsx'
 import searchImg from '../../assets/images/search.svg'
 import checkImg from '../../assets/images/check.svg'
 import userImg from '../../assets/images/user.svg'
 import maintenanceImg from '../../assets/images/maintenance.svg'
 
+import './index.scss'
 
 export default class Index extends Taro.Component {
   config = {
@@ -41,15 +42,13 @@ export default class Index extends Taro.Component {
     Taro.navigateTo({
       url: this.state.data[index].link
     })
-
   }
 
   render () {
     return (
       <View className='page'>
-        {/* S Header */}
-        <DocsHeader title='欢迎使用'></DocsHeader>
-        {/* E Header */}
+
+        <Profile></Profile>
 
         <AtGrid data={
         [

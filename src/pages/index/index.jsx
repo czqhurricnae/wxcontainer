@@ -25,7 +25,7 @@ export default class Index extends Taro.Component {
          link: '/pages/timesheet/index'
       },
       {
-         link: '/pages/authorize/index'
+         link: '/pages/authorize/login'
       }
     ] }
   }

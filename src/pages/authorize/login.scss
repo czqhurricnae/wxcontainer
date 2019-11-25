@@ -1,0 +1,20 @@
+@import '@styles/theme.scss';
+
+.user-login {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: 240px 40px 0;
+}
+
+.user-login__logo {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 100px;
+
+  &-img {
+    width: 536px;
+    height: 180px;
+  }
+}

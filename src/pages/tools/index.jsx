@@ -2,11 +2,12 @@ import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { ClSearchBar } from "mp-colorui"
 import _ from 'lodash'
+import Table from '../table/index.jsx'
+import DocsHeader from '../doc-header/index.jsx'
 
-import './search.scss'
-import Table from '../table/table.jsx'
+import './index.scss'
 
-export default class Index extends Component {
+export default class Search extends Component {
   constructor () {
     super(...arguments)
     this.state = {
@@ -153,9 +154,10 @@ export default class Index extends Component {
 
     return (
       <View>
+        <DocsHeader title='工具查询'></DocsHeader>
         <ClSearchBar
           shape='round'
-          bgColor='light-blue'
+          bgColor='blue'
           placeholder='请输入搜索关键字'
           showLoading={isLoading}
           showResult={open}

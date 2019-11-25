@@ -1,11 +1,11 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 
-import './table.scss'
+import './index.scss'
 
 export default class Table extends Component {
-  constructor (props) {
-    super(props)
+  constructor () {
+    super(...arguments)
   }
 
   render () {

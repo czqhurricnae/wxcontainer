@@ -17,9 +17,11 @@ class App extends Component {
   config = {
     pages: [
       'pages/index/index',
+      'pages/tools/index',
       'pages/timesheet/index',
-      'pages/tools/search'
+      'pages/authorize/login',
     ],
+
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',

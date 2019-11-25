@@ -18,13 +18,13 @@ export default class Index extends Taro.Component {
     super(...arguments)
     this.state = { data: [
       {
-         link: '/pages/tools/search'
+         link: '/pages/tools/index'
       },
       {
          link: '/pages/timesheet/index'
       },
       {
-         link: '/pages/user/index'
+         link: '/pages/authorize/index'
       }
     ] }
   }

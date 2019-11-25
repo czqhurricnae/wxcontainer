@@ -154,7 +154,7 @@ class EntryForm extends Taro.Component {
 const mapStateToProps = (state) => {
   return (
     {
-      datasheets: state.datasheets
+      datasheets: state.timesheet.datasheets
     }
   )
 }

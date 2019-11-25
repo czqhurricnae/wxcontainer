@@ -1,22 +1,13 @@
 import Taro from '@tarojs/taro'
-import { connect, Provider } from '@tarojs/redux'
+import { connect } from '@tarojs/redux'
 import { View } from '@tarojs/components'
 import { AtButton, AtMessage } from 'taro-ui'
 import DocsHeader from '../doc-header/index.jsx'
 import EntryForm from './views/entryForm.jsx'
 import { addEntryForm } from './actions.jsx'
-import store from './store.jsx'
+import store from '../../store.jsx'
 
 import './dataEntry.scss'
-
-@connect((state) => ({
-  formList: state.formList,
-  datasheets: state.datasheets
-}), (dispatch) => ({
-  onAddEntryForm () {
-    dispatch(addEntryForm())
-  }
-}))
 
 class DataEntry extends Taro.Component {
   static defaultProps = {
@@ -64,4 +55,23 @@ class DataEntry extends Taro.Component {
   }
 }
 
-export default DataEntry
+const mapStateToProps = (state) => {
+  return (
+    {
+      formList: state.timesheet.formList,
+      datasheets: state.timesheet.datasheets
+    }
+  )
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return (
+    {
+        onAddEntryForm () {
+          dispatch(addEntryForm())
+        }
+    }
+  )
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DataEntry)

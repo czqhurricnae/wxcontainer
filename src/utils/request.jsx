@@ -1,36 +1,73 @@
 import Taro from '@tarojs/taro'
-import { getToken } from './tools'
+import { API_USER, API_USER_LOGIN } from '@constants/api'
+
+const CODE_SUCCESS = '200'
+const CODE_AUTH_EXPIRED = '600'
+
+function getStorage (key) {
+  return Taro.getStorage({ key }).then(res => res.data).catch(() => '')
+}
+
+function updateStorage (data = {}) {
+  return Promise.all([
+    Taro.setStorage({ key: 'token', data: data['3rdSession'] || '' }),
+    Taro.setStorage({ key: 'uid', data: data['uid'] || '' })
+  ])
+}
 
 /**
- * request请求
- * @param {*} url     请求地址
- * @param {*} method  请求方式
- * @param {*} data    传递的数据
+ * 简易封装网络请求
+ * // NOTE 需要注意 RN 不支持 *StorageSync,此处用 async/await 解决
+ * @param {*} options
  */
-export default function request (url, method, data) {
-  Taro.showLoading({
-    title: '加载中...'
-  })
+export default async function fetch (options) {
+  const { url, payload, method = 'GET', showToast = true, autoLogin = true } = options
+  const token = await getStorage('token')
+  const header = token ? { 'WX-PIN-SESSION': token, 'X-WX-3RD-Session': token } : {}
+  if (method === 'POST') {
+    header['content-type'] = 'application/json'
+  }
 
   return Taro.request({
     url,
     method,
-    data,
-    header: {
-      'content-type': 'application/json',
-      Authorization: 'bearer ' + getToken()
-    }
-  })
-    .then(res => {
-      Taro.hideLoading()
-      if (res.statusCode === 401) {
-        // 需要登录
-        Taro.redirectTo({ url: '/pages/auth/login' })
+    data: payload,
+    header
+  }).then(async (res) => {
+    const { code, data } = res.data
+    if (code !== CODE_SUCCESS) {
+      if (code === CODE_AUTH_EXPIRED) {
+        await updateStorage({})
       }
-      return res.data
-    })
-    .catch(err => {
-      Taro.hideLoading()
-      return err
-    })
+      return Promise.reject(res.data)
+    }
+
+    if (url === API_USER_LOGIN) {
+      await updateStorage(data)
+    }
+
+    // XXX 用户信息需展示 uid,但是 uid 是登录接口就返回的,比较蛋疼,暂时糅合在 fetch 中解决
+    if (url === API_USER) {
+      const uid = await getStorage('uid')
+      return { ...data, uid }
+    }
+
+    return data
+  }).catch((err) => {
+    const defaultMsg = err.code === CODE_AUTH_EXPIRED ? '登录失效' : '请求异常'
+    if (showToast) {
+      Taro.showToast({
+        title: err && err.errorMsg || defaultMsg,
+        icon: 'none'
+      })
+    }
+
+    if (err.code === CODE_AUTH_EXPIRED && autoLogin) {
+      Taro.navigateTo({
+        url: '/pages/authorize/login'
+      })
+    }
+
+    return Promise.reject({ message: defaultMsg, ...err })
+  })
 }

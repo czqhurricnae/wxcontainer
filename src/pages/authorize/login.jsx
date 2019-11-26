@@ -8,11 +8,6 @@ import logoImg from '../../assets/images/maintenance.svg'
 
 import './login.scss'
 
-// TODO 由于 RN 的 app.js 中 initPxTransform 执行顺序关系,不能在 class 外用到 Taro.pxTransform
-// const BUTTON = {
-//   marginTop: Taro.pxTransform(30)
-// }
-
 @connect(state => state.user, actions)
 class UserLogin extends Component {
   config = {
@@ -20,10 +15,6 @@ class UserLogin extends Component {
   }
 
   render () {
-    const BUTTON = {
-      marginTop: Taro.pxTransform(30)
-    }
-
     return (
       <View className='user-login'>
         <View className='user-login__logo'>

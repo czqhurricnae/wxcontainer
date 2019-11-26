@@ -19,7 +19,7 @@ export default class Index extends Component {
 
   handleCancelClick = () => {
     this.setState({showToast: true, showAuthModal: false})
-    Taro.redirectTo({ url: '/pages/index/index' })
+    setTimeout(() => Taro.redirectTo({ url: '/pages/index/index' }), 4000)
   }
 
   handleGetInfoConfirmClick = (e) => {
@@ -44,7 +44,8 @@ export default class Index extends Component {
   }
 
   render () {
-    const isOpened = this.state.showAuthModal
+    const showAuthModal= this.state.showAuthModal
+    const showToast= this.state.showToast
     const getAuthorize = this.state.getAuthorize
 
     return (
@@ -55,26 +56,39 @@ export default class Index extends Component {
           onClick={this.agreeAuth}>
           微信登录
         </AtButton>
-        <AtModal isOpened={isOpened} onTouchMove={this.handlePreventTouchMove}>
-          <AtModalHeader>授权提示</AtModalHeader>
+        <AtModal isOpened={showAuthModal}
+                 onTouchMove={this.handlePreventTouchMove}>
+          <AtModalHeader>
+            授权提示
+          </AtModalHeader>
           <AtModalContent >
-            申请获取您的公开信息(昵称, 头像等)
+            申请获取您的公开信息(昵称, 头像等).
           </AtModalContent>
           <AtModalAction>
-            <Button onClick={this.handleCancelClick}>取消</Button>
-            {getAuthorize ?
-             <Button onClick={this.handleAuthConfirmClick}>授权</Button>
+            <Button onClick={this.handleCancelClick}>
+              取消
+            </Button>
+            {
+              getAuthorize ?
+             <Button
+               onClick={this.handleAuthConfirmClick}>
+               授权
+             </Button>
             :
-             <Button openType='getUserInfo'
-               onGetUserInfo={this.handleGetInfoConfirmClick}>授权</Button>
+             <Button
+               openType='getUserInfo'
+               onGetUserInfo={this.handleGetInfoConfirmClick}>
+               授权
+             </Button>
             }
           </AtModalAction>
         </AtModal>
         <AtToast
-          isOpened={this.state.showToast}
-          text={'您没有授权, 将无法访问敏感信息和个人相关操作.'}
-          duration={2000}
-        ></AtToast>
+          isOpened={showToast}
+          text={'您没有授权,工具查询可以正常使用, 但可能无法访问敏感信息或无法进行部分操作.'}
+          duration={3500}
+        >
+        </AtToast>
       </View>
     )
   }

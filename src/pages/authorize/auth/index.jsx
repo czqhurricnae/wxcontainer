@@ -9,8 +9,33 @@ export default class Index extends Component {
     this.state = {
       showAuthModal: false,
       showToast: false,
-      getAuthorize: true
+      getAuthorize: true,
+      toastText: ''
     }
+  }
+
+  componentDidMount() {
+    const code2sessionAPI = 'http://localhost:5000/api/code2session/'
+
+    Taro.login()
+      .then((res) => {
+        Taro.request({
+            url: code2sessionAPI,
+            method: 'POST',
+            headers: {
+              'Content-type': 'application/json'
+            },
+            data: JSON.stringify({ code: res.code })
+          })
+          .then(res => {
+            if (res.statusCode === 200) {
+              Taro.setStorageSync('sessionKey', res.data)
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+      })
   }
 
   agreeAuth = () => {
@@ -18,20 +43,52 @@ export default class Index extends Component {
   }
 
   handleCancelClick = () => {
-    this.setState({showToast: true, showAuthModal: false})
+    this.setState({showToast: true,
+                   toastText: '您没有授权,工具查询可以正常使用, 但可能无法访问敏感信息或无法进行部分操作.',
+                   showAuthModal: false})
     setTimeout(() => Taro.redirectTo({ url: '/pages/index/index' }), 4000)
   }
 
+  // XXX NOTE: 无法使用 getPhoneNumber.
   handleGetInfoConfirmClick = (e) => {
-    Taro.setStorageSync('isHomeLongHideAuthModal', true)
+    const sessionKey = Taro.getStorageSync('sessionKey')
+    const userInfoAPI = 'http://localhost:5000/api/userInfo/'
 
-    this.setState({
-      showAuthModal: false
+    Taro.checkSession().then((res) => {
+      if (res.errMsg == 'checkSession:ok') {
+        const encryptedData = e.detail.encryptedData
+        const iv = e.detail.iv
+
+        Taro.request({
+          url: userInfoAPI,
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json'
+          },
+          data: JSON.stringify({
+            'session_key': sessionKey,
+            'encrypted_data': encryptedData,
+            'iv': iv
+          })
+        })
+          .then(res => {
+            if (res.statusCode === 200) {
+              const userInfo = res.data
+              Taro.setStorageSync('userInfo', userInfo)
+
+              this.setState({showToast: true,
+                             toastText: '登录成功, 将跳转回首页.',
+                             showAuthModal: false})
+
+              setTimeout(() => Taro.redirectTo({ url: '/pages/index/index' }), 4000)
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+      }
     })
 
-  }
-
-  handleAuthConfirmClick = (e) => {
     Taro.setStorageSync('isHomeLongHideAuthModal', true)
 
     this.setState({
@@ -46,6 +103,7 @@ export default class Index extends Component {
   render () {
     const showAuthModal= this.state.showAuthModal
     const showToast= this.state.showToast
+    const toastText = this.state.toastText
     const getAuthorize = this.state.getAuthorize
 
     return (
@@ -57,35 +115,26 @@ export default class Index extends Component {
           微信登录
         </AtButton>
         <AtModal isOpened={showAuthModal}
-                 onTouchMove={this.handlePreventTouchMove}>
+          onTouchMove={this.handlePreventTouchMove}>
           <AtModalHeader>
             授权提示
           </AtModalHeader>
-          <AtModalContent >
+          <AtModalContent>
             申请获取您的公开信息(昵称, 头像等).
           </AtModalContent>
           <AtModalAction>
             <Button onClick={this.handleCancelClick}>
               取消
             </Button>
-            {
-              getAuthorize ?
-             <Button
-               onClick={this.handleAuthConfirmClick}>
-               授权
-             </Button>
-            :
-             <Button
-               openType='getUserInfo'
-               onGetUserInfo={this.handleGetInfoConfirmClick}>
-               授权
-             </Button>
-            }
+            <Button openType='getUserInfo'
+              onGetUserInfo={this.handleGetInfoConfirmClick}>
+              授权
+            </Button>
           </AtModalAction>
         </AtModal>
         <AtToast
           isOpened={showToast}
-          text={'您没有授权,工具查询可以正常使用, 但可能无法访问敏感信息或无法进行部分操作.'}
+          text={toastText}
           duration={3500}
         >
         </AtToast>

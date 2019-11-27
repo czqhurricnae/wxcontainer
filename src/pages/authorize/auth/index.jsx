@@ -1,9 +1,15 @@
 import Taro, { Component } from '@tarojs/taro'
 import { AtButton, AtToast,  AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
+import { connect } from '@tarojs/redux'
+import { getUserInfo } from '../actions.jsx'
 
 import './index.scss'
 
-export default class Index extends Component {
+class Index extends Component {
+  static defaultProps = {
+    onLogin : () => {},
+  }
+
   constructor () {
     super(...arguments)
     this.state = {
@@ -74,7 +80,9 @@ export default class Index extends Component {
           .then(res => {
             if (res.statusCode === 200) {
               const userInfo = res.data
+
               Taro.setStorageSync('userInfo', userInfo)
+              this.props.onLogin(userInfo)
 
               this.setState({showToast: true,
                              toastText: '登录成功, 将跳转回首页.',
@@ -142,3 +150,17 @@ export default class Index extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => ({})
+
+const mapDispatchToProps = (dispatch) => {
+  return (
+    {
+      onLogin (userInfo) {
+        dispatch(getUserInfo(userInfo))
+      }
+    }
+  )
+}
+
+export default connect( mapStateToProps, mapDispatchToProps)(Index)

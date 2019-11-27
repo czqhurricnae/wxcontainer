@@ -1,32 +1,10 @@
-import { USER_INFO, USER_LOGIN, USER_LOGOUT } from '@constants/user'
-import { API_USER, API_USER_LOGIN } from '@constants/api'
-import { createAction } from '@utils/redux'
+import { GET_USER_INFO, LOGOUT } from './actionTypes.jsx'
 
-/**
- * 获取用户信息
- * @param {*} payload
- */
-export const dispatchUser = payload => createAction({
-  url: API_USER,
-  fetchOptions: {
-    showToast: false,
-    autoLogin: false
-  },
-  type: USER_INFO,
-  payload
+export const getUserInfo = (userInfo) => ({
+  type: GET_USER_INFO,
+  userInfo: userInfo
 })
 
-/**
- * 用户登录
- * @param {*} payload
- */
-export const dispatchLogin = payload => createAction({
-  url: API_USER_LOGIN,
-  type: USER_LOGIN,
-  payload
+export const logout = () => ({
+  type: LOGOUT
 })
-
-/**
- * 用户退出登录
- */
-export const dispatchLogout = () => ({ type: USER_LOGOUT })

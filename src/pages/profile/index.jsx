@@ -18,7 +18,7 @@ export default class Profile extends Component {
   handleLogin = () => {
     if (!this.props.userInfo.login) {
       Taro.navigateTo({
-        url: '/pages/authorize/login'
+        url: '/pages/authorize/index'
       })
     }
   }

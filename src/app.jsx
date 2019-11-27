@@ -3,7 +3,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { Provider } from '@tarojs/redux'
 import Index from './pages/index'
 import TimeSheet from './pages/timesheet'
-import UserLogin from './pages/authorize/login.jsx'
+import UserLogin from './pages/authorize'
 import store from './store.jsx'
 
 import './app.scss'
@@ -21,7 +21,7 @@ class App extends Component {
       'pages/index/index',
       'pages/tools/index',
       'pages/timesheet/index',
-      'pages/authorize/login',
+      'pages/authorize/index',
     ],
 
     window: {

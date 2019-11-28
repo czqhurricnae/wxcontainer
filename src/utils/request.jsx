@@ -16,8 +16,8 @@ function updateStorage (data = {}) {
 }
 
 /**
- * 简易封装网络请求
- * // NOTE 需要注意 RN 不支持 *StorageSync,此处用 async/await 解决
+ * 简易封装网络请求.
+ * // NOTE: 需要注意 RN 不支持 *StorageSync,此处用 async/await 解决.
  * @param {*} options
  */
 export default async function fetch (options) {
@@ -46,7 +46,7 @@ export default async function fetch (options) {
       await updateStorage(data)
     }
 
-    // XXX 用户信息需展示 uid,但是 uid 是登录接口就返回的,比较蛋疼,暂时糅合在 fetch 中解决
+    // XXX 用户信息需展示 uid,但是 uid 是登录接口就返回的,比较蛋疼,暂时糅合在 fetch 中解决.
     if (url === API_USER) {
       const uid = await getStorage('uid')
       return { ...data, uid }
@@ -64,7 +64,7 @@ export default async function fetch (options) {
 
     if (err.code === CODE_AUTH_EXPIRED && autoLogin) {
       Taro.navigateTo({
-        url: '/pages/authorize/login'
+        url: '/pages/authorize/index'
       })
     }
 

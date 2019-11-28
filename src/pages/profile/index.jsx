@@ -1,18 +1,25 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
+import { connect } from '@tarojs/redux'
 import { AtCard, AtList, AtListItem, AtAvatar } from 'taro-ui'
+import store from '../../store.jsx'
 import defaultAvatar from '../../assets/images/default-avatar.png'
 import bg from '../../assets/images/bg.jpg'
 
 import './index.scss'
 
-export default class Profile extends Component {
+class Profile extends Component {
+
+  static defaultProps = {
+    userInfo: {}
+  }
+
   constructor () {
     super(...arguments)
   }
 
-  static defaultProps = {
-    userInfo: {}
+  componentDidShow () {
+    store.subscribe(() => this._updateUserInfo())
   }
 
   handleLogin = () => {
@@ -34,6 +41,12 @@ export default class Profile extends Component {
     return `${firstLetter}****${lastLetter}@${suffix}`
   }
 
+  _updateUserInfo = () => {
+    const { userInfo } = this.props
+
+    this.setState({userInfo})
+  }
+
   render () {
     const { userInfo } = this.props
 
@@ -50,14 +63,14 @@ export default class Profile extends Component {
           <View className='user-profile__avatar'>
             <Image
               className='user-profile__avatar-img'
-              src={userInfo.avatar || defaultAvatar}
+              src={userInfo.avatarUrl || defaultAvatar}
               onClick={this.handleLogin}
             />
           </View>
 
           <View className='user-profile__info' onClick={this.handleLogin}>
             <Text className='user-profile__info-name'>
-              {userInfo.login ? userInfo.nickname : '未登录'}
+              {userInfo.login ? userInfo.nickName : '未登录'}
             </Text>
             {userInfo.login ?
               <View className='user-profile__info-wrap'>
@@ -74,3 +87,19 @@ export default class Profile extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return (
+    {
+      userInfo: state.userInfo
+    }
+  )
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return ({
+
+  })
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile)

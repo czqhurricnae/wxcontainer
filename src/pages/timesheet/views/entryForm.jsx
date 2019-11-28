@@ -12,7 +12,8 @@ import './entryForm.scss'
 class EntryForm extends Taro.Component {
   static defaultProps = {
     onDelete: () => {},
-    onStash: () => {}
+    onStash: () => {},
+    formID: ''
   }
 
   constructor () {
@@ -23,10 +24,6 @@ class EntryForm extends Taro.Component {
       date: moment(new Date()).format('YYYY-MM-DD'),
       isDisabled: false
     }
-  }
-
-  componentDidMount () {
-
   }
 
   handleAirplaneChange = (value) => {
@@ -47,9 +44,19 @@ class EntryForm extends Taro.Component {
     return value
   }
 
+  handleDateChange = (event) => {
+    this.setState({
+      date: event.detail.value
+    })
+  }
+
   handleSubmit = (event) => {
     const formID = this.props.formID
-    const datasheet = {airplane: this.state.airplane, time: this.state.time}
+    const datasheet = {
+      date: this.state.date,
+      airplane: this.state.airplane,
+      time: this.state.time
+    }
 
     this.props.onStash(formID, datasheet)
     this.setState({isDisabled: true})
@@ -72,14 +79,9 @@ class EntryForm extends Taro.Component {
     this.props.onDelete(formID)
   }
 
-  handleDateChange = (event) => {
-    this.setState({date: event.detail.value})
-  }
-
   render () {
     const { formID } = this.props
 
-    console.log(this.props.datasheets)
     return (
       <View className='page'>
         <View className='doc-body'>

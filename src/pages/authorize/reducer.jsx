@@ -1,6 +1,6 @@
 import { GET_USER_INFO, LOGOUT } from './actionTypes.jsx'
 
-const initialState = {}
+const initialState = { login: false }
 
 export default (state = initialState, action) => {
   switch (action.type) {

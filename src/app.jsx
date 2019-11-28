@@ -1,7 +1,7 @@
 import '@tarojs/async-await'
 import Taro, { Component } from '@tarojs/taro'
 import { Provider } from '@tarojs/redux'
-import Index from './pages/index'
+import Profile from './pages/profile'
 import TimeSheet from './pages/timesheet'
 import UserLogin from './pages/authorize'
 import store from './store.jsx'
@@ -45,9 +45,9 @@ class App extends Component {
   render () {
     return (
       <Provider store={store}>
-        <Index />
-        <TimeSheet></TimeSheet>
-        <UserLogin></UserLogin>
+        <Profile />
+        <TimeSheet />
+        <UserLogin />
       </Provider>
     )
   }

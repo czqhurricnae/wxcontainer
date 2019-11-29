@@ -8,12 +8,16 @@ import checkImg from '../../assets/images/check.svg'
 import userImg from '../../assets/images/user.svg'
 import maintenanceImg from '../../assets/images/maintenance.svg'
 import documentationImg from '../../assets/images/documentation.svg'
+import administratorImg from '../../assets/images/administrator.svg'
 
 import './index.scss'
 
 const dataSearch = [
   {
     link: '/pages/tools/index'
+  },
+  {
+    link: '/pages/documents/index'
   }
 ]
 
@@ -122,6 +126,10 @@ export default class Index extends Taro.Component {
                 {
                   image: userImg,
                   value: '个人中心'
+                },
+                {
+                  image: administratorImg,
+                  value: '后台管理'
                 }
               ]
               }onClick={this.handleClickUser}

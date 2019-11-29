@@ -20,8 +20,9 @@ class App extends Component {
     pages: [
       'pages/index/index',
       'pages/tools/index',
+      'pages/documents/index',
       'pages/timesheet/index',
-      'pages/authorize/index',
+      'pages/authorize/index'
     ],
 
     window: {

@@ -1,34 +1,27 @@
-/**
- * 分类页样式
- */
-.panel-header {
-  display: flex;
-  align-items: center;
-  padding: 60px;
-  height: 180px;
-
-  &__icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 128px;
-    height: 128px;
-    color: #78A4FA;
-    text-align: center;
-    background: #fff;
-    box-shadow: 0 20px 80px 0 rgba(0, 0, 0, 0.11);
-    border-radius: 10px;
-
-    .img {
-      width: 128px;
-      height: 128px;
-    }
-  }
+.panel {
+  margin: 32rpx 0 36rpx;
 
   &__title {
-    margin-left: 32px;
-    color: #78A4FA;
-    font-size: 36px;
-    font-weight: bold;
+    position: relative;
+    margin-bottom: 1.06667rem;
+    padding-left: 1.06667rem;
+    color: #6a6a77;
+    font-size: 32rpx;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  &__title::before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    left: .512rem;
+    top: 50%;
+    margin-top: -.42667rem;
+    width: 2PX;
+    height: 32rpx;
+    background-color: #6190e8;
+    box-shadow: 0 0.14933rem 0.256rem 0 rgba(97,144,232,.2);
+    border-radius: 1PX;
   }
 }

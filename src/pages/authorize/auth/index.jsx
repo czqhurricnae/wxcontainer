@@ -21,7 +21,7 @@ class Index extends Component {
   }
 
   componentDidMount() {
-    const code2sessionAPI = 'http://localhost:5000/api/code2session/'
+    const code2sessionAPI = 'http://wxcontainer.applinzi.com/api/code2session/'
 
     Taro.login()
       .then((res) => {
@@ -58,7 +58,7 @@ class Index extends Component {
   // XXX NOTE: 无法使用 getPhoneNumber.
   handleGetInfoConfirmClick = (e) => {
     const sessionKey = Taro.getStorageSync('sessionKey')
-    const userInfoAPI = 'http://localhost:5000/api/userInfo/'
+    const userInfoAPI = 'http://wxcontainer.applinzi.com/api/userInfo/'
 
     Taro.checkSession().then((res) => {
       if (res.errMsg == 'checkSession:ok') {

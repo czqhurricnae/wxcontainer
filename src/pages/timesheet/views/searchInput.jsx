@@ -2,6 +2,12 @@ import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { ClSearchBar } from '../../../utils/searchBar/index.tsx'
 import _ from 'lodash'
+import {
+  projectsAPI,
+  segmentationsAPI,
+  toolsAPI
+}
+from '@constants/api'
 
 import './searchInput.scss'
 
@@ -18,8 +24,6 @@ export default class SearchInput extends Component {
   }
 
   componentDidMount () {
-    const projectsAPI = 'http://wxcontainer.applinzi.com/api/projects/'
-
     Taro.request({ url: projectsAPI, method: 'GET' })
       .then(res => {
         if (res.statusCode === 200) {
@@ -62,8 +66,6 @@ export default class SearchInput extends Component {
   }
 
   handleSegment = (search) => {
-    const segmentationsAPI = 'http://wxcontainer.applinzi.com/api/segmentations/'
-
     Taro.request({
       url: segmentationsAPI,
       method: 'POST',
@@ -86,7 +88,6 @@ export default class SearchInput extends Component {
   }
 
   handleSelect = (index) => {
-    const toolsAPI = 'http://wxcontainer.applinzi.com/api/tools/'
     const { results } = this.state
     const resultValue = results[index].title
 

@@ -4,6 +4,13 @@ import { ClSearchBar } from "mp-colorui"
 import _ from 'lodash'
 import Table from '../table/index.jsx'
 import DocsHeader from '../doc-header/index.jsx'
+import {
+  projectsAPI,
+  segmentationsAPI,
+  toolsAPI,
+  projectsToolsAPI
+}
+from '@constants/api'
 
 import './index.scss'
 
@@ -27,8 +34,6 @@ export default class Search extends Component {
   }
 
   componentDidMount () {
-    const projectsAPI = 'http://wxcontainer.applinzi.com/api/projects/'
-
     Taro.request({ url: projectsAPI, method: 'GET' })
       .then(res => {
         if (res.statusCode === 200) {
@@ -77,8 +82,6 @@ export default class Search extends Component {
   }
 
   handleSegment = (search) => {
-    const segmentationsAPI = 'http://wxcontainer.applinzi.com/api/segmentations/'
-
     Taro.request({
         url: segmentationsAPI,
         method: 'POST',
@@ -101,12 +104,12 @@ export default class Search extends Component {
   }
 
   handleSelect = (index) => {
-    const toolsAPI = 'http://wxcontainer.applinzi.com/api/tools/'
     const { results } = this.state
 
     Taro.showToast({
       title: `您点击了 ${results[index].title} .`,
-      icon: 'none'
+      icon: 'none',
+      duration: 2500
     })
 
     Taro.request({
@@ -124,29 +127,36 @@ export default class Search extends Component {
   }
 
   handleSearchClick = (search) => {
-    const projectsToolsAPI = 'http://wxcontainer.applinzi.com/api/projects/'
-
-    Taro.showToast({
-      title: `将会搜索所有关于  ${search} 的工具. `,
-      icon: 'none'
-    })
-
-    Taro.request({
-      url: projectsToolsAPI,
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      data: JSON.stringify({ search })
-    })
-      .then(res => {
-        this.setState({projectsTools: res.data})
-      })
-      .catch((error) => {
-        console.log(error)
+    if (search !== '') {
+      Taro.showToast({
+        title: `将会搜索所有关于 ${search} 的工具. `,
+        icon: 'none',
+        duration: 2500
       })
 
-    this.setState({open: false})
+      Taro.request({
+        url: projectsToolsAPI,
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json'
+        },
+        data: JSON.stringify({ search })
+      })
+        .then(res => {
+          this.setState({projectsTools: res.data})
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+
+      this.setState({open: false})
+    } else {
+      Taro.showToast({
+        title: '请输入要查询的关键字.',
+        icon: 'none',
+        duration: 2500
+      })
+    }
   }
 
   render () {

@@ -1,7 +1,7 @@
 const isH5 = process.env.CLIENT_ENV === "h5";
 
-const HOST = "\"http://www.wxcontainer.applinzi.com\"";
-const HOST_M = "\"http://m.wxcontainer.applinzi.com\"";
+const HOST = "\"https://wxcontainer.applinzi.com\"";
+const HOST_M = "\"https://m.wxcontainer.applinzi.com\"";
 
 // XXX 搭了个 proxy 用于演示 prod 环境的 H5.
 const HOST_H5 = "\"http://jsnewbee.com/taro-yanxuan/api\"";

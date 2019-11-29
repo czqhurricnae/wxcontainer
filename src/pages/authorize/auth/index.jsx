@@ -2,6 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { AtButton, AtToast,  AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import { getUserInfo } from '../actions.jsx'
+import { code2sessionAPI, userInfoAPI } from '@constants/api'
 
 import './index.scss'
 
@@ -21,8 +22,6 @@ class Index extends Component {
   }
 
   componentDidMount() {
-    const code2sessionAPI = 'http://wxcontainer.applinzi.com/api/code2session/'
-
     Taro.login()
       .then((res) => {
         Taro.request({
@@ -58,7 +57,6 @@ class Index extends Component {
   // XXX NOTE: 无法使用 getPhoneNumber.
   handleGetInfoConfirmClick = (e) => {
     const sessionKey = Taro.getStorageSync('sessionKey')
-    const userInfoAPI = 'http://wxcontainer.applinzi.com/api/userInfo/'
 
     Taro.checkSession().then((res) => {
       if (res.errMsg == 'checkSession:ok') {

@@ -10,3 +10,17 @@ export const hostM = HOST_M
 // document
 export const documentsAPI = `${host}/api/documents`;
 export const documentAPI = `${host}/api/documents/`;
+
+// project
+export const projectsAPI = `${host}/api/projects`;
+
+// segmentation
+export const segmentationsAPI = `${host}/api/segmentations`;
+
+// tool
+export const toolsAPI = `${host}/api/tools/`;
+export const projectsToolsAPI = `${host}/api/projects`;
+
+// user info
+export const code2sessionAPI = `${host}/api/code2session`;
+export const userInfoAPI = `${host}/api/userInfo`;

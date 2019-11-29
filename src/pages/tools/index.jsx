@@ -27,7 +27,7 @@ export default class Search extends Component {
   }
 
   componentDidMount () {
-    const projectsAPI = 'http://localhost:5000/api/projects/'
+    const projectsAPI = 'http://wxcontainer.applinzi.com/api/projects/'
 
     Taro.request({ url: projectsAPI, method: 'GET' })
       .then(res => {
@@ -66,18 +66,18 @@ export default class Search extends Component {
         return new RegExp(item).test(result.title)
       })
 
-      this.setState({
+      setTimeout(() => this.setState({
         isLoading: false,
         results: _.filter(this.state.source, isMatch),
         open: Boolean(value.length),
         value: value
-      })
+      }))
 
     }, 500)
   }
 
   handleSegment = (search) => {
-    const segmentationsAPI = 'http://localhost:5000/api/segmentations/'
+    const segmentationsAPI = 'http://wxcontainer.applinzi.com/api/segmentations/'
 
     Taro.request({
         url: segmentationsAPI,
@@ -101,7 +101,7 @@ export default class Search extends Component {
   }
 
   handleSelect = (index) => {
-    const toolsAPI = 'http://localhost:5000/api/tools/'
+    const toolsAPI = 'http://wxcontainer.applinzi.com/api/tools/'
     const { results } = this.state
 
     Taro.showToast({
@@ -124,7 +124,7 @@ export default class Search extends Component {
   }
 
   handleSearchClick = (search) => {
-    const projectsToolsAPI = 'http://localhost:5000/api/projects/'
+    const projectsToolsAPI = 'http://wxcontainer.applinzi.com/api/projects/'
 
     Taro.showToast({
       title: `将会搜索所有关于  ${search} 的工具. `,
@@ -162,7 +162,7 @@ export default class Search extends Component {
           showLoading={isLoading}
           showResult={open}
           result={results}
-          onInput={_.debounce(this.handleSearchChange, 1000, {
+          onInput={_.debounce(this.handleSearchChange, 1200, {
             leading: true})}
           onTouchResult={this.handleSelect}
           onSearch={this.handleSearchClick}

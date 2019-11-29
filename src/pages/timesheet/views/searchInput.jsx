@@ -18,7 +18,7 @@ export default class SearchInput extends Component {
   }
 
   componentDidMount () {
-    const projectsAPI = 'http://localhost:5000/api/projects/'
+    const projectsAPI = 'http://wxcontainer.applinzi.com/api/projects/'
 
     Taro.request({ url: projectsAPI, method: 'GET' })
       .then(res => {
@@ -62,7 +62,7 @@ export default class SearchInput extends Component {
   }
 
   handleSegment = (search) => {
-    const segmentationsAPI = 'http://localhost:5000/api/segmentations/'
+    const segmentationsAPI = 'http://wxcontainer.applinzi.com/api/segmentations/'
 
     Taro.request({
       url: segmentationsAPI,
@@ -86,7 +86,7 @@ export default class SearchInput extends Component {
   }
 
   handleSelect = (index) => {
-    const toolsAPI = 'http://localhost:5000/api/tools/'
+    const toolsAPI = 'http://wxcontainer.applinzi.com/api/tools/'
     const { results } = this.state
     const resultValue = results[index].title
 

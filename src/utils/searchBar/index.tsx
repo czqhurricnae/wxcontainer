@@ -47,6 +47,7 @@ export default class ClSearchBar extends Component<IProps, IState> {
 
   onFocus(e) {
     _.invoke(this.props, "onFocus", e, this.props)
+
     this.setState({
       showSearch: true
     });

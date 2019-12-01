@@ -3,9 +3,8 @@ import { View } from '@tarojs/components'
 import { ClSearchBar } from '../../../utils/searchBar/index.tsx'
 import _ from 'lodash'
 import {
-  projectsAPI,
+  jobsAPI,
   segmentationsAPI,
-  toolsAPI
 }
 from '@constants/api'
 
@@ -24,7 +23,7 @@ export default class SearchInput extends Component {
   }
 
   componentDidMount () {
-    Taro.request({ url: projectsAPI, method: 'GET' })
+    Taro.request({ url: jobsAPI, method: 'GET' })
       .then(res => {
         if (res.statusCode === 200) {
           this.setState({ source: res.data })
@@ -55,12 +54,12 @@ export default class SearchInput extends Component {
           return new RegExp(item).test(result.title)
         })
 
-      this.setState({
+      setTimeout(() => this.setState({
         isLoading: false,
         results: _.filter(this.state.source, isMatch),
         open: Boolean(value.length),
         value: value
-      })
+      }))
 
     }, 500)
   }
@@ -112,6 +111,10 @@ export default class SearchInput extends Component {
     this.setState({open: false})
   }
 
+  handleBlur = () => {
+    this.setState({open: false})
+  }
+
   render () {
     const { isLoading, open, results  } = this.state
 
@@ -130,11 +133,12 @@ export default class SearchInput extends Component {
           showLoading={isLoading}
           showResult={open}
           result={results}
-          onInput={_.debounce(this.handleSearchChange, 1000, {
+          onInput={_.debounce(this.handleSearchChange, 1200, {
             leading: true})}
           onTouchResult={this.handleSelect}
           onSearch={this.handleSearchClick}
           onFocus={this.handleFocus}
+          onBlur={this.handleBlur}
           searchType={'none'}
         />
       </View>

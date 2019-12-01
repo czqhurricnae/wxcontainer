@@ -24,3 +24,6 @@ export const projectsToolsAPI = `${host}/api/projects`;
 // user info
 export const code2sessionAPI = `${host}/api/code2session`;
 export const userInfoAPI = `${host}/api/userInfo`;
+
+// job
+export const jobsAPI = `${host}/api/jobs`;

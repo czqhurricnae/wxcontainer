@@ -1,7 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { ClSearchBar } from '../../../utils/searchBar/index.tsx'
+import { ClSearchBar } from "mp-colorui"
+import { connect } from '@tarojs/redux'
 import _ from 'lodash'
+import { selectSearch } from '../actions.jsx'
 import {
   jobsAPI,
   segmentationsAPI,
@@ -10,7 +12,7 @@ from '@constants/api'
 
 import './searchInput.scss'
 
-export default class SearchInput extends Component {
+class SearchInput extends Component {
   constructor () {
     super(...arguments)
     this.state = {
@@ -31,6 +33,10 @@ export default class SearchInput extends Component {
       })
       .catch((error) => {
         console.log(error)
+        Taro.atMessage({
+          'message': '从后台获取标准工时失败, 请手动输入工作项目和工时.',
+          'type': 'warning',
+        })
       })
   }
 
@@ -88,14 +94,18 @@ export default class SearchInput extends Component {
 
   handleSelect = (index) => {
     const { results } = this.state
-    const resultValue = results[index].title
+    const formID = this.props.formID
+    const job = results[index].title
+    const time = results[index].time
 
     Taro.showToast({
-      title: `您点击了 ${resultValue} .`,
+      title: `您点击了 ${job} .`,
       icon: 'none'
     })
 
-    this.setState({open: false, value: resultValue})
+    this.setState({open: false, value: job})
+
+    this.props.onSelectSearch(formID, job, time)
   }
 
   handleSearchClick = (value) => {
@@ -145,3 +155,23 @@ export default class SearchInput extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return (
+    {
+      datasheets: state.timesheet.datasheets
+    }
+  )
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return (
+    {
+      onSelectSearch (formID, job, time) {
+        dispatch(selectSearch(formID, job, time))
+      }
+    }
+  )
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchInput)

@@ -1,4 +1,4 @@
-import { ADD_ENTRY_FORM, DELETE_FORM, STASH_FORM } from './actionTypes.jsx'
+import { ADD_ENTRY_FORM, DELETE_FORM, STASH_FORM, SELECT_SEARCH } from './actionTypes.jsx'
 
 export const addEntryForm = () => ({
   type: ADD_ENTRY_FORM
@@ -13,4 +13,11 @@ export const stashForm = (formID, datasheet) => ({
   type: STASH_FORM,
   formID: formID,
   datasheet: datasheet
+})
+
+export const selectSearch = (formID, job, time) => ({
+  type: SELECT_SEARCH,
+  formID: formID,
+  job: job,
+  time: time
 })

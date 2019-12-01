@@ -2,6 +2,7 @@ import Taro from '@tarojs/taro'
 import { View, Picker } from '@tarojs/components'
 import { AtForm, AtInput, AtButton, AtCard } from 'taro-ui'
 import { connect } from '@tarojs/redux'
+import store from '../../../store.jsx'
 import { deleteForm, stashForm } from '../actions.jsx'
 import DocsHeader from '../../doc-header/index.jsx'
 import SearchInput from './searchInput.jsx'
@@ -24,6 +25,10 @@ class EntryForm extends Taro.Component {
       date: moment(new Date()).format('YYYY-MM-DD'),
       isDisabled: false
     }
+  }
+
+  componentDidShow () {
+    store.subscribe(() => this._updateEntryForm())
   }
 
   handleAirplaneChange = (value) => {
@@ -79,6 +84,16 @@ class EntryForm extends Taro.Component {
     this.props.onDelete(formID)
   }
 
+  _updateEntryForm = () => {
+    const formID = this.props.formID
+    const datasheets = this.props.datasheets
+    const datasheet = datasheets[formID]
+    const { job } = datasheet
+    const { time } = datasheet
+
+    this.setState({ job:job, time: time})
+  }
+
   render () {
     const { formID } = this.props
 
@@ -107,7 +122,7 @@ class EntryForm extends Taro.Component {
                       </Picker>
                     </View>
 
-                    <SearchInput>
+                    <SearchInput formID={this.props.formID}>
                     </SearchInput>
 
                     <View className='component-item__input-group'>

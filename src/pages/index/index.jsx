@@ -30,10 +30,17 @@ const dataTimesheet = [
 const dataUser= [
   {
     link: '/pages/authorize/index'
+  },
+  {
+    link: '/pages/admin/index'
   }
 ]
 
 export default class Index extends Taro.Component {
+
+  constructor () {
+    super(...arguments)
+  }
 
   config = {
     navigationBarTitleText: '导航页面'
@@ -41,10 +48,6 @@ export default class Index extends Taro.Component {
 
   static defaultProps = {
     userInfo: {}
-  }
-
-  constructor () {
-    super(...arguments)
   }
 
   onShareAppMessage () {

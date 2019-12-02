@@ -1,11 +1,12 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
+import { AtInput } from 'taro-ui'
 import { ClSearchBar } from "mp-colorui"
 import { connect } from '@tarojs/redux'
 import _ from 'lodash'
 import { selectSearch } from '../actions.jsx'
 import {
-  jobsAPI,
+  tasksAPI,
   segmentationsAPI,
 }
 from '@constants/api'
@@ -21,11 +22,12 @@ class SearchInput extends Component {
       segmentations: [],
       value: '',
       open: false,
-      isLoading: false}
+      isLoading: false,
+      taskTime: ''}
   }
 
   componentDidMount () {
-    Taro.request({ url: jobsAPI, method: 'GET' })
+    Taro.request({ url: tasksAPI, method: 'GET' })
       .then(res => {
         if (res.statusCode === 200) {
           this.setState({ source: res.data })
@@ -38,6 +40,14 @@ class SearchInput extends Component {
           'type': 'warning',
         })
       })
+  }
+
+  handleTasktimeChange = (taskTime) => {
+    this.setState({
+      time: taskTime
+    })
+
+    return taskTime
   }
 
   handleSearchChange = (value) => {
@@ -95,17 +105,17 @@ class SearchInput extends Component {
   handleSelect = (index) => {
     const { results } = this.state
     const formID = this.props.formID
-    const job = results[index].title
-    const time = results[index].time
+    const task = results[index].title
+    const taskTime = results[index].taskTime
 
     Taro.showToast({
-      title: `您点击了 ${job} .`,
+      title: `您点击了 ${task} .`,
       icon: 'none'
     })
 
-    this.setState({open: false, value: job})
+    this.setState({open: false, value: task, taskTime: taskTime})
 
-    this.props.onSelectSearch(formID, job, time)
+    this.props.onSelectSearch(formID, task, taskTime)
   }
 
   handleSearchClick = (value) => {
@@ -126,7 +136,7 @@ class SearchInput extends Component {
   }
 
   render () {
-    const { isLoading, open, results  } = this.state
+    const { isLoading, open, results, taskTime  } = this.state
 
     return (
       <View className='component-item__search-input-group'>
@@ -137,6 +147,16 @@ class SearchInput extends Component {
           <View className='component-item__search-input-group__search-input-item__value'>
             {this.state.value}
           </View>
+        </View>
+        <View className='component-item__input-group'>
+          <AtInput
+            name='taskTime'
+            title='工时'
+            type='text'
+            placeholder='自动填充'
+            value={taskTime}
+            onChange={this.handleTimeChange}
+          />
         </View>
         <ClSearchBar
           placeholder='搜索你的工作项目'
@@ -167,8 +187,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return (
     {
-      onSelectSearch (formID, job, time) {
-        dispatch(selectSearch(formID, job, time))
+      onSelectSearch (formID, task, taskTime) {
+        dispatch(selectSearch(formID, task, taskTime))
       }
     }
   )

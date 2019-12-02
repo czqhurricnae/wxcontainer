@@ -15,9 +15,9 @@ export const stashForm = (formID, datasheet) => ({
   datasheet: datasheet
 })
 
-export const selectSearch = (formID, job, time) => ({
+export const selectSearch = (formID, task, time) => ({
   type: SELECT_SEARCH,
   formID: formID,
-  job: job,
+  task: task,
   time: time
 })

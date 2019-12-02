@@ -21,29 +21,15 @@ class EntryForm extends Taro.Component {
     super (...arguments)
     this.state = {
       airplane: '',
-      time: '',
       date: moment(new Date()).format('YYYY-MM-DD'),
-      isDisabled: false
+      stashDisabled: false
     }
-  }
-
-  componentDidShow () {
-    store.subscribe(() => this._updateEntryForm())
   }
 
   handleAirplaneChange = (value) => {
     this.setState({
       airplane: value,
-      isDisabled: false
-    })
-
-    return value
-  }
-
-  handleTimeChange = (value) => {
-    this.setState({
-      time: value,
-      isDisabled: false
+      stashDisabled: false
     })
 
     return value
@@ -51,7 +37,8 @@ class EntryForm extends Taro.Component {
 
   handleDateChange = (event) => {
     this.setState({
-      date: event.detail.value
+      date: event.detail.value,
+      stashDisabled: false
     })
   }
 
@@ -60,18 +47,16 @@ class EntryForm extends Taro.Component {
     const datasheet = {
       date: this.state.date,
       airplane: this.state.airplane,
-      time: this.state.time
     }
 
     this.props.onStash(formID, datasheet)
-    this.setState({isDisabled: true})
+    this.setState({stashDisabled: true})
   }
 
   handleReset = (event) => {
     this.setState({
       airplane: '',
-      time: '',
-      isDisabled: false
+      stashDisabled: false
     })
   }
 
@@ -82,16 +67,6 @@ class EntryForm extends Taro.Component {
       'type': 'warning',
     })
     this.props.onDelete(formID)
-  }
-
-  _updateEntryForm = () => {
-    const formID = this.props.formID
-    const datasheets = this.props.datasheets
-    const datasheet = datasheets[formID]
-    const { job } = datasheet
-    const { time } = datasheet
-
-    this.setState({ job:job, time: time})
   }
 
   render () {
@@ -136,16 +111,6 @@ class EntryForm extends Taro.Component {
                       />
                     </View>
 
-                    <View className='component-item__input-group'>
-                      <AtInput
-                        name='time'
-                        title='工时'
-                        type='text'
-                        placeholder='自动填充'
-                        value={this.state.time}
-                        onChange={this.handleTimeChange}
-                      />
-                    </View>
                     <View className='component-item__btn-group'>
                       <View className='component-item__btn-group__btn-item'>
                         <AtButton  size='small' onClick={this.handleDelete.bind(this)}>删除</AtButton>
@@ -154,7 +119,7 @@ class EntryForm extends Taro.Component {
                         <AtButton formType='reset' size='small'>重置</AtButton>
                       </View>
                       <View className='component-item__btn-group__btn-item'>
-                        <AtButton type='primary' formType='submit' size='normal' disabled ={this.state.isDisabled}>暂存</AtButton>
+                        <AtButton type='primary' formType='submit' size='normal' disabled ={this.state.stashDisabled}>暂存</AtButton>
                       </View>
                     </View>
                   </AtForm>

@@ -46,9 +46,12 @@ class DataEntry extends Taro.Component {
         <DocsHeader title='工时录入' />
         <View>
           {children}
-          <AtButton onClick={this.handleAddEntryForm}>
-            增加表格
-          </AtButton>
+          <View className='at-row'>
+              <AtButton className='dataEntry__addButton at-col at-col-11' type='secondary' onClick={this.handleAddEntryForm}>
+                增加表格
+              </AtButton>
+              <AtButton className='dataEntry__submitButton at-col at-col-11'  type='primary'>全部提交</AtButton>
+          </View>
         </View>
       </View>
     )

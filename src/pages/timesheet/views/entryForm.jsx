@@ -2,7 +2,6 @@ import Taro from '@tarojs/taro'
 import { View, Picker } from '@tarojs/components'
 import { AtForm, AtInput, AtButton, AtCard } from 'taro-ui'
 import { connect } from '@tarojs/redux'
-import store from '../../../store.jsx'
 import { deleteForm, stashForm } from '../actions.jsx'
 import DocsHeader from '../../doc-header/index.jsx'
 import SearchInput from './searchInput.jsx'
@@ -69,8 +68,13 @@ class EntryForm extends Taro.Component {
     this.props.onDelete(formID)
   }
 
+  handleTaskChange = () => {
+    this.setState({stashDisabled: false})
+  }
+
   render () {
     const { formID } = this.props
+    console.log(this.props.datasheets)
 
     return (
       <View className='page'>
@@ -97,7 +101,7 @@ class EntryForm extends Taro.Component {
                       </Picker>
                     </View>
 
-                    <SearchInput formID={this.props.formID}>
+                    <SearchInput formID={this.props.formID} onTaskChange={this.handleTaskChange}>
                     </SearchInput>
 
                     <View className='component-item__input-group'>

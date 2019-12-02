@@ -4,7 +4,7 @@ import { AtInput } from 'taro-ui'
 import { ClSearchBar } from "mp-colorui"
 import { connect } from '@tarojs/redux'
 import _ from 'lodash'
-import { selectSearch } from '../actions.jsx'
+import { selectSearch, changeTask, changeTasktime } from '../actions.jsx'
 import {
   tasksAPI,
   segmentationsAPI,
@@ -43,14 +43,25 @@ class SearchInput extends Component {
   }
 
   handleTasktimeChange = (taskTime) => {
+    const formID = this.props.formID
+
     this.setState({
       time: taskTime
     })
+
+    // XXX: 让暂存键高亮.
+    this.props.onTaskChange()
+    // XXX: 将变化的 taskTime 暂存到 store 中.
+    this.props.onChangeTasktime(formID, taskTime)
 
     return taskTime
   }
 
   handleSearchChange = (value) => {
+    const formID = this.props.formID
+
+    this.props.onTaskChange()
+
     this.setState({ isLoading: true, value })
 
     setTimeout(() => this.handleSegment(value))
@@ -75,7 +86,7 @@ class SearchInput extends Component {
         results: _.filter(this.state.source, isMatch),
         open: Boolean(value.length),
         value: value
-      }))
+      }, this.props.onChangeTask(formID, value)))
 
     }, 500)
   }
@@ -114,8 +125,9 @@ class SearchInput extends Component {
     })
 
     this.setState({open: false, value: task, taskTime: taskTime})
-
-    this.props.onSelectSearch(formID, task, taskTime)
+    this.props.onChangeTask(formID, task)
+    this.props.onChangeTasktime(formID, taskTime)
+    // this.props.onSelectSearch(formID, task, taskTime)
   }
 
   handleSearchClick = (value) => {
@@ -155,7 +167,7 @@ class SearchInput extends Component {
             type='text'
             placeholder='自动填充'
             value={taskTime}
-            onChange={this.handleTimeChange}
+            onChange={this.handleTasktimeChange}
           />
         </View>
         <ClSearchBar
@@ -189,6 +201,12 @@ const mapDispatchToProps = (dispatch) => {
     {
       onSelectSearch (formID, task, taskTime) {
         dispatch(selectSearch(formID, task, taskTime))
+      },
+      onChangeTask (formID, task) {
+        dispatch(changeTask(formID, task))
+      },
+      onChangeTasktime (formID, taskTime) {
+        dispatch(changeTasktime(formID, taskTime))
       }
     }
   )

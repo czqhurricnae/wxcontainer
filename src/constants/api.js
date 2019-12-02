@@ -27,3 +27,6 @@ export const userInfoAPI = `${host}/api/userInfo`;
 
 // task
 export const tasksAPI = `${host}/api/tasks`;
+
+// admin
+export const adminURL = `${host}/admin/`;

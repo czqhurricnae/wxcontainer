@@ -43,12 +43,34 @@ class EntryForm extends Taro.Component {
 
   handleSubmit = (event) => {
     const formID = this.props.formID
-    const datasheet = {
+    const propsDatasheet = this.props.datasheets[formID] || {}
+    const submitDatasheet = {
       date: this.state.date,
       airplane: this.state.airplane,
+      stashed: this.state.stashDisabled
     }
 
-    this.props.onStash(formID, datasheet)
+    if (submitDatasheet.airplane == '') {
+      Taro.showToast({
+        title: '请输入机号, 再暂存.',
+        icon: 'none',
+        duration: 2000
+      })
+
+      return
+    }
+
+    if (!('task' in propsDatasheet) || !('taskTime' in propsDatasheet)) {
+      Taro.showToast({
+        title: '请输入工作或者工时, 再暂存.',
+        icon: 'none',
+        duration: 2000
+      })
+
+      return
+    }
+
+    this.props.onStash(formID, submitDatasheet)
     this.setState({stashDisabled: true})
   }
 

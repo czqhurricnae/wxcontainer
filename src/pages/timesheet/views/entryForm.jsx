@@ -60,7 +60,7 @@ class EntryForm extends Taro.Component {
       return
     }
 
-    if (!('task' in propsDatasheet) || !('taskTime' in propsDatasheet)) {
+    if (!('task' in propsDatasheet) || !('tasktime' in propsDatasheet)) {
       Taro.showToast({
         title: '请输入工作或者工时, 再暂存.',
         icon: 'none',

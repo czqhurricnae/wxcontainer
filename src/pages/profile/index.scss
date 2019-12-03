@@ -50,11 +50,29 @@ $avatarSize: 140px;
     line-height: 36px;
   }
 
+  &-NO {
+    color: #444;
+    font-size: 24px;
+    line-height: 36px;
+  }
+
+  &-authority {
+    color: #444;
+    font-size: 24px;
+    line-height: 36px;
+  }
+
   &-wrap {
     display: flex;
     flex-direction: row;
     align-items: center;
     margin-top: 28px;
+  }
+
+  &-level {
+    margin-right: 12px;
+    width: 30px;
+    height: 30px;
   }
 
   &-uid {

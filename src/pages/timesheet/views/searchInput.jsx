@@ -23,7 +23,7 @@ class SearchInput extends Component {
       value: '',
       open: false,
       isLoading: false,
-      taskTime: ''}
+      tasktime: ''}
   }
 
   componentDidMount () {
@@ -42,23 +42,24 @@ class SearchInput extends Component {
       })
   }
 
-  handleTasktimeChange = (taskTime) => {
+  handleTasktimeChange = (tasktime) => {
     const formID = this.props.formID
 
     this.setState({
-      time: taskTime
+      time: tasktime
     })
 
     // XXX: 让暂存键高亮.
     this.props.onTaskChange()
-    // XXX: 将变化的 taskTime 暂存到 store 中.
-    this.props.onChangeTasktime(formID, taskTime)
+    // XXX: 将变化的 tasktime 暂存到 store 中.
+    this.props.onChangeTasktime(formID, tasktime)
 
-    return taskTime
+    return tasktime
   }
 
   handleSearchChange = (value) => {
     const formID = this.props.formID
+    const kind = '其他'
 
     this.props.onTaskChange()
 
@@ -86,7 +87,7 @@ class SearchInput extends Component {
         results: _.filter(this.state.source, isMatch),
         open: Boolean(value.length),
         value: value
-      }, this.props.onChangeTask(formID, value)))
+      }, this.props.onChangeTask(formID, value, kind)))
 
     }, 500)
   }
@@ -117,17 +118,18 @@ class SearchInput extends Component {
     const { results } = this.state
     const formID = this.props.formID
     const task = results[index].title
-    const taskTime = results[index].taskTime
+    const tasktime = results[index].tasktime
+    const kind = results[index].kind
 
     Taro.showToast({
       title: `您点击了 ${task} .`,
       icon: 'none'
     })
 
-    this.setState({open: false, value: task, taskTime: taskTime})
-    this.props.onChangeTask(formID, task)
-    this.props.onChangeTasktime(formID, taskTime)
-    // this.props.onSelectSearch(formID, task, taskTime)
+    this.setState({open: false, value: task, tasktime: tasktime})
+    this.props.onChangeTask(formID, task, kind)
+    this.props.onChangeTasktime(formID, tasktime)
+    // this.props.onSelectSearch(formID, task, tasktime)
   }
 
   handleSearchClick = (value) => {
@@ -148,7 +150,7 @@ class SearchInput extends Component {
   }
 
   render () {
-    const { isLoading, open, results, taskTime  } = this.state
+    const { isLoading, open, results, tasktime  } = this.state
 
     return (
       <View className='component-item__search-input-group'>
@@ -162,15 +164,16 @@ class SearchInput extends Component {
         </View>
         <View className='component-item__input-group'>
           <AtInput
-            name='taskTime'
+            name='tasktime'
             title='工时'
             type='text'
             placeholder='自动填充'
-            value={taskTime}
+            value={tasktime}
             onChange={this.handleTasktimeChange}
           />
         </View>
         <ClSearchBar
+          color='lightblue'
           placeholder='搜索你的工作项目'
           showLoading={isLoading}
           showResult={open}
@@ -199,14 +202,14 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return (
     {
-      onSelectSearch (formID, task, taskTime) {
-        dispatch(selectSearch(formID, task, taskTime))
+      onSelectSearch (formID, task, tasktime) {
+        dispatch(selectSearch(formID, task, tasktime))
       },
-      onChangeTask (formID, task) {
-        dispatch(changeTask(formID, task))
+      onChangeTask (formID, task, kind) {
+        dispatch(changeTask(formID, task, kind))
       },
-      onChangeTasktime (formID, taskTime) {
-        dispatch(changeTasktime(formID, taskTime))
+      onChangeTasktime (formID, tasktime) {
+        dispatch(changeTasktime(formID, tasktime))
       }
     }
   )

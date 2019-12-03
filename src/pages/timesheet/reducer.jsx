@@ -43,10 +43,11 @@ export default (state = { datasheets: {}, formList: [1, 2] }, action) => {
     case SELECT_SEARCH: {
       const formID = action.formID
       const task = action.task
-      const taskTime = action.taskTime
+      const tasktime = action.tasktime
+      const kind = action.kind
       const obj = JSON.parse(JSON.stringify(state.datasheets))
 
-      obj[formID] = { ...obj[formID], task, taskTime }
+      obj[formID] = { ...obj[formID], task, tasktime, kind }
 
       return (
         {
@@ -59,9 +60,10 @@ export default (state = { datasheets: {}, formList: [1, 2] }, action) => {
     case CHANGE_TASK: {
       const formID = action.formID
       const task = action.task
+      const kind = action.kind
       const obj = JSON.parse(JSON.stringify(state.datasheets))
 
-      obj[formID] = { ...obj[formID], task }
+      obj[formID] = { ...obj[formID], task, kind }
 
       return (
         {
@@ -73,10 +75,10 @@ export default (state = { datasheets: {}, formList: [1, 2] }, action) => {
 
     case CHANGE_TASKTIME: {
       const formID = action.formID
-      const taskTime = action.taskTime
+      const tasktime = action.tasktime
       const obj = JSON.parse(JSON.stringify(state.datasheets))
 
-      obj[formID] = { ...obj[formID], taskTime }
+      obj[formID] = { ...obj[formID], tasktime }
 
       return (
         {

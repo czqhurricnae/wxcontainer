@@ -22,14 +22,15 @@ export const selectSearch = (formID, task, time) => ({
   time: time
 })
 
-export const changeTask = (formID, task) => ({
+export const changeTask = (formID, task, kind) => ({
   type: CHANGE_TASK,
   formID: formID,
-  task: task
+  task: task,
+  kind: kind
 })
 
-export const changeTasktime = (formID, taskTime) => ({
+export const changeTasktime = (formID, tasktime) => ({
   type: CHANGE_TASKTIME,
   formID: formID,
-  taskTime: taskTime
+  tasktime: tasktime
 })

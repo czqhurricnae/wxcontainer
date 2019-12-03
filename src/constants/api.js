@@ -30,3 +30,6 @@ export const tasksAPI = `${host}/api/tasks`;
 
 // admin
 export const adminURL = `${host}/admin/`;
+
+// timesheet
+export const timesheetAPI = `${host}/api/timesheetTables`;

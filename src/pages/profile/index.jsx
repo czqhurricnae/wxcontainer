@@ -5,6 +5,7 @@ import { AtCard, AtList, AtListItem, AtAvatar } from 'taro-ui'
 import store from '../../store.jsx'
 import defaultAvatar from '../../assets/images/default-avatar.png'
 import bg from '../../assets/images/bg.jpg'
+import level01 from '../../assets/images/level-01.png'
 
 import './index.scss'
 
@@ -72,13 +73,20 @@ class Profile extends Component {
             <Text className='user-profile__info-name'>
               {userInfo.login ? userInfo.nickName : '未登录'}
             </Text>
-            {userInfo.login ?
-              <View className='user-profile__info-wrap'>
-                <Text className='user-profile__info-uid'>
-                  {this.getUid(userInfo.uid)}
-                </Text>
-              </View> :
-              <Text className='user-profile__info-tip'>点击登录账号</Text>
+            <Text className='user-profile__info-NO'>
+              {userInfo.login ? userInfo.NO: ''}
+            </Text>
+            <Text className='user-profile__info-authority'>
+              {userInfo.login ? userInfo.authority: ''}
+            </Text>
+            {userInfo.login && userInfo.authority == '管理者' ?
+             <View className='user-profile__info-wrap'>
+               <Image className='user-profile__info-level' src={level01} />
+               <Text className='user-profile__info-uid'>
+                 {this.getUid(userInfo.uid)}
+               </Text>
+             </View> :
+             <Text className='user-profile__info-tip'>点击登录账号</Text>
             }
           </View>
 

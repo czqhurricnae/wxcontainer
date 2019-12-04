@@ -85,8 +85,11 @@ class Profile extends Component {
                <Text className='user-profile__info-uid'>
                  {this.getUid(userInfo.uid)}
                </Text>
-             </View> :
-             <Text className='user-profile__info-tip'>点击登录账号</Text>
+             </View> : ''
+            }
+            {!userInfo.login ?
+             <Text className='user-profile__info-tip'>点击登录账号</Text>:
+             ''
             }
           </View>
 
@@ -105,9 +108,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return ({
-
-  })
+  return ({})
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile)

@@ -32,4 +32,4 @@ export const tasksAPI = `${host}/api/tasks`;
 export const adminURL = `${host}/admin/`;
 
 // timesheet
-export const timesheetAPI = `${host}/api/timesheetTables`;
+export const timesheetAPI = `${host}/api/timesheets`;

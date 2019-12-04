@@ -46,8 +46,9 @@ class DataEntry extends Taro.Component {
         const userInfo = Taro.getStorageSync('userInfo')
         const name = userInfo.nickName
         const number = userInfo.number
+        const belongto_team = userInfo.belongto_team
 
-        timesheets.push({...timesheet, name: name, number: number})
+        timesheets.push({...timesheet, name: name, number: number, belongto_team: belongto_team})
       })
 
       Taro.request({

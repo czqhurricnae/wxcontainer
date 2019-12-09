@@ -5,7 +5,8 @@ import {
   AtModal,
   AtModalHeader,
   AtModalContent,
-  AtModalAction } from 'taro-ui'
+  AtModalAction,
+  AtMessage } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import { getUserInfo } from '../actions.jsx'
 import { code2sessionAPI, userInfoAPI } from '@constants/api'
@@ -26,7 +27,7 @@ class Index extends Taro.Component {
       toastText: ''
     }
   }
-  // FIXME: index.js:148 Uncaught (in promise) TypeError: _index2.default.atMessage is not a function
+
   componentDidMount() {
     Taro.login()
       .then((res) => {
@@ -47,7 +48,7 @@ class Index extends Taro.Component {
             console.log(error)
 
             Taro.atMessage({
-              'message': '与后台服务器连接时出现错误',
+              'message': `与后台服务器连接时出现错误, 错误信息为: ${error.errMsg}.`,
               'type': 'warning',
             })
           })
@@ -112,7 +113,7 @@ class Index extends Taro.Component {
             console.log(error)
 
             Taro.atMessage({
-              'message': '与后台服务器连接时出现错误',
+              'message': `与后台服务器连接时出现错误, 错误信息为: ${error.errMsg}.`,
               'type': 'warning',
             })
           })
@@ -146,6 +147,7 @@ class Index extends Taro.Component {
 
     return (
       <View className='user-login'>
+        <AtMessage></AtMessage>
         <AtButton
           type='primary'
           circle

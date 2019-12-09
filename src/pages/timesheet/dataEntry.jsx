@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import { connect } from '@tarojs/redux'
 import { View } from '@tarojs/components'
-import { AtButton, AtMessage } from 'taro-ui'
+import { AtButton, AtMessage, AtNoticebar } from 'taro-ui'
 import DocsHeader from '../doc-header/index.jsx'
 import EntryForm from './views/entryForm.jsx'
 import { addEntryForm } from './actions.jsx'
@@ -18,11 +18,22 @@ class DataEntry extends Taro.Component {
   constructor (props) {
     super(...arguments)
     const { formList } = this.props
-    this.state = { formList }
+
+    this.state = { formList,
+                   disableSubmit: false,
+                   showNoticebar: false }
   }
 
-  componentDidShow () {
+  componentDidMount () {
+    const userInfo = Taro.getStorageSync('userInfo')
+    const number = userInfo && userInfo.number
+
     store.subscribe(() => this._updateFormList())
+
+    if (!userInfo || !number) {
+      this.setState({disableSubmit: true,
+                     showNoticebar: true})
+    }
   }
 
   handleAddEntryForm = () => {
@@ -67,9 +78,17 @@ class DataEntry extends Taro.Component {
               duration: 2000
             })
           }
+          else {
+            Taro.showToast({
+              title: '提交时出现错误',
+              icon: 'none',
+              duration: 2000
+            })
+          }
         })
         .catch((error) => {
           console.log(error)
+
           Taro.showToast({
             title: `提交时出现错误, 错误信息为: ${error.errMsg}.`,
             icon: 'none',
@@ -89,14 +108,27 @@ class DataEntry extends Taro.Component {
     return (
       <View className='page flex-page' >
         <AtMessage></AtMessage>
+        {this.state.showNoticebar ?
+         <AtNoticebar icon='volume-plus'>
+           您没有登录, 或者后台没有您对应的工号, 无法进行工时提交!
+         </AtNoticebar>
+         : ''}
         <DocsHeader title='工时录入' />
         <View>
           {children}
           <View className='at-row'>
-              <AtButton className='dataEntry__addButton at-col at-col-11' type='secondary' onClick={this.handleAddEntryForm}>
+            <AtButton
+              className='dataEntry__addButton at-col at-col-11'
+              type='secondary'
+              onClick={this.handleAddEntryForm}>
                 增加表格
-              </AtButton>
-            <AtButton className='dataEntry__submitButton at-col at-col-11'  type='primary' onClick={this.handleSubmit}>全部提交</AtButton>
+            </AtButton>
+            <AtButton className='dataEntry__submitButton at-col at-col-11'
+                      type='primary'
+                      onClick={this.handleSubmit}
+                      disabled={this.state.disableSubmit}>
+              全部提交
+            </AtButton>
           </View>
         </View>
       </View>

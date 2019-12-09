@@ -85,7 +85,7 @@ class EntryForm extends Taro.Component {
     const { formID } = this.props
 
     Taro.atMessage({
-      'message': '已经删除',
+      'message': '已经删除.',
       'type': 'warning',
     })
     this.props.onDelete(formID)

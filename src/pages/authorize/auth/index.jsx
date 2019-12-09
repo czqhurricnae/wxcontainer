@@ -1,12 +1,18 @@
-import Taro, { Component } from '@tarojs/taro'
-import { AtButton, AtToast,  AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
+import Taro from '@tarojs/taro'
+import {
+  AtButton,
+  AtToast,
+  AtModal,
+  AtModalHeader,
+  AtModalContent,
+  AtModalAction } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import { getUserInfo } from '../actions.jsx'
 import { code2sessionAPI, userInfoAPI } from '@constants/api'
 
 import './index.scss'
 
-class Index extends Component {
+class Index extends Taro.Component {
   static defaultProps = {
     onLogin : () => {},
   }
@@ -20,7 +26,7 @@ class Index extends Component {
       toastText: ''
     }
   }
-
+  // FIXME: index.js:148 Uncaught (in promise) TypeError: _index2.default.atMessage is not a function
   componentDidMount() {
     Taro.login()
       .then((res) => {
@@ -39,7 +45,20 @@ class Index extends Component {
           })
           .catch((error) => {
             console.log(error)
+
+            Taro.atMessage({
+              'message': '与后台服务器连接时出现错误',
+              'type': 'warning',
+            })
           })
+      })
+      .catch((error) => {
+        console.log(error)
+
+        Taro.atMessage({
+          'message': '微信登录失败, 请检查您的网络连接.',
+          'type': 'error',
+        })
       })
   }
 
@@ -86,14 +105,27 @@ class Index extends Component {
                              toastText: '登录成功, 将跳转回首页.',
                              showAuthModal: false})
 
-              setTimeout(() => Taro.redirectTo({ url: '/pages/index/index' }), 4000)
+              setTimeout(() => Taro.redirectTo({ url: '/pages/index/index' }), 3000)
             }
           })
           .catch((error) => {
             console.log(error)
+
+            Taro.atMessage({
+              'message': '与后台服务器连接时出现错误',
+              'type': 'warning',
+            })
           })
       }
     })
+      .catch((error) => {
+        console.log(error)
+
+        Taro.atMessage({
+          'message': '检查 sessionKey 出现错误, 请关闭小程序后重新登录.',
+          'type': 'warning',
+        })
+      })
 
     Taro.setStorageSync('isHomeLongHideAuthModal', true)
 

@@ -29,7 +29,7 @@ const dataTimesheet = [
 
 const dataUser= [
   {
-    link: '/pages/authorize/index'
+    link: '/pages/user/index'
   },
   {
     link: '/pages/admin/index'

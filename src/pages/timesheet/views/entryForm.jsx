@@ -83,6 +83,7 @@ class EntryForm extends Taro.Component {
 
   handleDelete () {
     const { formID } = this.props
+
     Taro.atMessage({
       'message': '已经删除',
       'type': 'warning',
@@ -96,7 +97,6 @@ class EntryForm extends Taro.Component {
 
   render () {
     const { formID } = this.props
-    console.log(this.props.datasheets)
 
     return (
       <View className='page'>
@@ -106,7 +106,7 @@ class EntryForm extends Taro.Component {
               <View className='component-item'>
                 <AtCard
                   title={String(formID)}
-                  note='点击 + 号来继续添加表单.'
+                  note='点击下方按钮来继续添加表单.'
                 >
                   <AtForm className='component-item__form-group'
                     onSubmit={this.handleSubmit}

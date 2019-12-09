@@ -35,6 +35,7 @@ class SearchInput extends Component {
       })
       .catch((error) => {
         console.log(error)
+
         Taro.atMessage({
           'message': '从后台获取标准工时失败, 请手动输入工作项目和工时.',
           'type': 'warning',

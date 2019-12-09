@@ -23,7 +23,8 @@ class App extends Component {
       'pages/documents/index',
       'pages/timesheet/index',
       'pages/authorize/index',
-      'pages/admin/index'
+      'pages/admin/index',
+      'pages/user/index'
     ],
 
     window: {

@@ -3,6 +3,7 @@ import { View, Picker } from "@tarojs/components";
 import { AtButton } from 'taro-ui'
 import MoveChart from '../../components/MoveChart'
 import moment from 'moment'
+import Echart from 'echarts12'
 
 import "./index.scss";
 
@@ -22,20 +23,6 @@ export default class Move extends Component {
     }
   }
 
-  componentDidMount() {
-    const chartData = {
-      dimensions: {
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun','Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-      },
-      measures: [{
-        data: [10, 52, 200, 334, 390, 330, 220, 334, 390, 330, 220, 10, 52, 200,]
-      }]
-    }
-    this.moveChart.refresh(chartData);
-  }
-
-  refMoveChart = (node) => this.moveChart = node
-
   handleStartDateChange = () => {
     this.setState({startDate: e.detail.value})
   }
@@ -52,11 +39,47 @@ export default class Move extends Component {
   }
 
   render() {
+    const option = {
+      color: ['#3398DB'],
+      tooltip : {
+        trigger: 'axis',
+        axisPointer : {        // 坐标轴指示器,坐标轴触发有效
+          type : 'shadow'      // 默认为直线,可选为:'line' | 'shadow'
+        }
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis : [
+        {
+          type : 'category',
+          data : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          axisTick: {
+            alignWithLabel: true
+          }
+        }
+      ],
+      yAxis : [
+        {
+          type : 'value'
+        }
+      ],
+      series : [
+        {
+          name:'直接访问',
+          type:'bar',
+          barWidth: '60%',
+          data:[10, 52, 200, 334, 390, 330, 220]
+        }
+      ]
+    }
+
     return (
       <View className='container'>
-        <View className="move-chart">
-          <MoveChart ref={this.refMoveChart} />
-        </View>
+        <Echart option={option} ec={{disableTouch: false}} style={'height: 400px'} ></Echart>
         <View>
           <Picker mode='date' value={this.state.startDate} onChange={this.handleStartDateChange}>
             <View className='picker-list-item'>

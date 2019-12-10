@@ -16,6 +16,7 @@ import './searchInput.scss'
 class SearchInput extends Component {
   constructor () {
     super(...arguments)
+
     this.state = {
       source: [],
       results: [],
@@ -24,6 +25,9 @@ class SearchInput extends Component {
       open: false,
       isLoading: false,
       tasktime: ''}
+
+    this.handleSearchChange = _.debounce(this.handleSearchChange, 500,
+                                         {leading: true})
   }
 
   componentDidMount () {
@@ -88,7 +92,7 @@ class SearchInput extends Component {
         results: _.filter(this.state.source, isMatch),
         open: Boolean(value.length),
         value: value
-      }, this.props.onChangeTask(formID, value, kind)))
+      }, this.props.onChangeTask(formID, value, kind)), 500)
 
     }, 500)
   }
@@ -179,8 +183,7 @@ class SearchInput extends Component {
           showLoading={isLoading}
           showResult={open}
           result={results}
-          onInput={_.debounce(this.handleSearchChange, 1200, {
-            leading: true})}
+          onInput={this.handleSearchChange}
           onTouchResult={this.handleSelect}
           onSearch={this.handleSearchClick}
           onFocus={this.handleFocus}

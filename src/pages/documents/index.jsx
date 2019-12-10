@@ -12,6 +12,7 @@ import './index.scss'
 export default class Search extends Component {
   constructor () {
     super(...arguments)
+
     this.state = {
       source: [],
       results: [],
@@ -20,6 +21,9 @@ export default class Search extends Component {
       value: '',
       open: false,
       isLoading: false}
+
+    this.handleSearchChange = _.debounce(this.handleSearchChange, 500,
+                                         {leading: true})
   }
 
   config : Config = {
@@ -63,7 +67,7 @@ export default class Search extends Component {
         results: _.filter(this.state.source, isMatch),
         open: Boolean(value.length),
         value: value
-      }))
+      }), 500)
 
     }, 500)
   }
@@ -152,7 +156,7 @@ export default class Search extends Component {
             showLoading={isLoading}
             showResult={open}
             result={results}
-            onInput={_.debounce(this.handleSearchChange, 1200, { leading: true})}
+            onInput={this.handleSearchChange}
             onTouchResult={this.handleSelect}
             onSearch={this.handleSearchClick} />
         </View>

@@ -241,6 +241,8 @@ class EntryForm extends Taro.Component {
       isLoading: false,
       stashDisabled: false
     })
+
+    this.forceUpdate()
   }
 
   handleDelete () {

@@ -19,9 +19,11 @@ class DataEntry extends Taro.Component {
     super(...arguments)
     const { formList } = this.props
 
-    this.state = { formList,
-                   disableSubmit: false,
-                   showNoticebar: false }
+    this.state = {
+      formList,
+      disableSubmit: false,
+      showNoticebar: false
+    }
   }
 
   componentDidMount () {
@@ -31,8 +33,10 @@ class DataEntry extends Taro.Component {
     store.subscribe(() => this._updateFormList())
 
     if (!userInfo || !number) {
-      this.setState({disableSubmit: true,
-                     showNoticebar: true})
+      this.setState({
+        disableSubmit: true,
+        showNoticebar: true
+      })
     }
   }
 
@@ -48,11 +52,11 @@ class DataEntry extends Taro.Component {
   handleSubmit = () => {
     const state = store.getState()
     const datasheets  = state.timesheet.datasheets
-    const arr = Object.keys(datasheets)
+    const formIDArray = Object.keys(datasheets)
     const timesheets = new Array()
 
-    if (arr.length !== 0) {
-      arr.map((item, index, array) => {
+    if (formIDArray.length !== 0) {
+      formIDArray.map((item, index, array) => {
         const timesheet = datasheets[item]
         const userInfo = Taro.getStorageSync('userInfo')
         const name = userInfo.nickName
@@ -79,29 +83,37 @@ class DataEntry extends Taro.Component {
             })
           }
           else {
-            Taro.showToast({
-              title: '提交时出现错误',
-              icon: 'none',
-              duration: 2000
+            Taro.atMessage({
+              'message': '提交时出现错误!',
+              'type': 'warning',
             })
           }
         })
         .catch((error) => {
-          console.log(error)
-
-          Taro.showToast({
-            title: `提交时出现错误, 错误信息为: ${error.errMsg}.`,
-            icon: 'none',
-            duration: 2000
+          Taro.atMessage({
+            'message': `提交时出现错误, 错误信息为: ${error.errMsg}!`,
+            'type': 'warning',
           })
         })
     }
+    // XXX: 一个暂存都没有.
+    else {
+      Taro.atMessage({
+        'message': '请确保先暂存再提交!',
+        'type': 'warning'
+      })
+    }
+  }
+
+  _checkTimesheet = (formID, timesheet) => {
+
+
   }
 
   render () {
     const { formList } = this.state
 
-    const children = formList.map((item, index, array) => {
+    const children = formList.map((item, index, formIDArrayay) => {
       return (<EntryForm formID={item}></EntryForm>)
     })
 
@@ -123,10 +135,11 @@ class DataEntry extends Taro.Component {
               onClick={this.handleAddEntryForm}>
                 增加表格
             </AtButton>
-            <AtButton className='dataEntry__submitButton at-col at-col-11'
-                      type='primary'
-                      onClick={this.handleSubmit}
-                      disabled={this.state.disableSubmit}>
+            <AtButton
+              className='dataEntry__submitButton at-col at-col-11'
+              type='primary'
+              onClick={this.handleSubmit}
+              disabled={this.state.disableSubmit}>
               全部提交
             </AtButton>
           </View>

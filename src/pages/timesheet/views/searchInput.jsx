@@ -21,12 +21,12 @@ class SearchInput extends Component {
       source: [],
       results: [],
       segmentations: [],
-      value: '',
+      task: '',
       open: false,
       isLoading: false,
       tasktime: ''}
 
-    this.handleSearchChange = _.debounce(this.handleSearchChange, 500,
+    this.handleSearchChange = _.debounce(this.handleSearchChange, 600,
                                          {leading: true})
   }
 
@@ -51,7 +51,7 @@ class SearchInput extends Component {
     const formID = this.props.formID
 
     this.setState({
-      time: tasktime
+      tasktime: tasktime
     })
 
     // XXX: 让暂存键高亮.
@@ -62,37 +62,44 @@ class SearchInput extends Component {
     return tasktime
   }
 
-  handleSearchChange = (value) => {
+  handleSearchChange = (task) => {
     const formID = this.props.formID
     const kind = '其他'
 
+    // XXX: 让暂存键高亮.
     this.props.onTaskChange()
 
-    this.setState({ isLoading: true, value })
+    this.setState({ isLoading: true, task })
 
-    setTimeout(() => this.handleSegment(value))
+    setTimeout(() => this.handleSegment(task))
 
-    if (value === '') {
+    if (task === '') {
       setTimeout(() => {
-        this.setState({isLoading: false, results: []})
+        this.setState({
+          isLoading: false,
+          results: [],
+          open: false,
+          task: task
+        }, this.props.onChangeTask(formID, task, kind))
       })
+
       return
     }
 
     setTimeout(() => {
       this.setState({isLoading: true})
 
-      const isMatch = result => this.state.segmentations.every((item,
-        index, array) => {
+      const isMatch = result => this.state.segmentations.every(
+        (item, index, array) => {
           return new RegExp(item).test(result.title)
         })
 
       setTimeout(() => this.setState({
         isLoading: false,
         results: _.filter(this.state.source, isMatch),
-        open: Boolean(value.length),
-        value: value
-      }, this.props.onChangeTask(formID, value, kind)), 500)
+        open: Boolean(task.length),
+        task: task
+      }, this.props.onChangeTask(formID, task, kind)), 800)
 
     }, 500)
   }
@@ -109,8 +116,8 @@ class SearchInput extends Component {
       .then(res => {
         if (res.statusCode === 200) {
           this.setState({
-            segmentations: res.data.filter((item,
-              index, array) => (item.length > 1))
+            segmentations: res.data.filter(
+              (item, index, array) => (item.length > 1))
           })
         }
       })
@@ -131,19 +138,10 @@ class SearchInput extends Component {
       icon: 'none'
     })
 
-    this.setState({open: false, value: task, tasktime: tasktime})
+    this.setState({open: false, task: task, tasktime: tasktime})
     this.props.onChangeTask(formID, task, kind)
     this.props.onChangeTasktime(formID, tasktime)
     // this.props.onSelectSearch(formID, task, tasktime)
-  }
-
-  handleSearchClick = (value) => {
-    this.setState({open: false, value: ''})
-
-    Taro.showToast({
-      title: '已重置',
-      icon: 'none'
-    })
   }
 
   handleFocus = () => {
@@ -155,7 +153,7 @@ class SearchInput extends Component {
   }
 
   render () {
-    const { isLoading, open, results, tasktime  } = this.state
+    const { isLoading, open, results, task, tasktime } = this.state
 
     return (
       <View className='component-item__search-input-group'>
@@ -164,7 +162,7 @@ class SearchInput extends Component {
             工作项目
           </View>
           <View className='component-item__search-input-group__search-input-item__value'>
-            {this.state.value}
+            {task}
           </View>
         </View>
         <View className='component-item__input-group'>
@@ -185,7 +183,6 @@ class SearchInput extends Component {
           result={results}
           onInput={this.handleSearchChange}
           onTouchResult={this.handleSelect}
-          onSearch={this.handleSearchClick}
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
           searchType={'none'}

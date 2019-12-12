@@ -47,7 +47,7 @@ class EntryForm extends Taro.Component {
     const submitDatasheet = {
       date: this.state.date,
       airplane: this.state.airplane,
-      stashed: this.state.stashDisabled
+      stashed: true
     }
 
     if (submitDatasheet.airplane == '') {
@@ -60,7 +60,19 @@ class EntryForm extends Taro.Component {
       return
     }
 
+    // XXX: 当用户第一次没有输入任何工作时进行提示.
     if (!('task' in propsDatasheet) || !('tasktime' in propsDatasheet)) {
+      Taro.showToast({
+        title: '请输入工作或者工时, 再暂存.',
+        icon: 'none',
+        duration: 2000
+      })
+
+      return
+    }
+
+    // XXX: 当用户在进行有效输入后再进行重置后, store 中 task, tasktime 都为空字符串.
+    if ((propsDatasheet.task == '') || (propsDatasheet.tasktime == '')) {
       Taro.showToast({
         title: '请输入工作或者工时, 再暂存.',
         icon: 'none',
@@ -77,6 +89,7 @@ class EntryForm extends Taro.Component {
   handleReset = (event) => {
     this.setState({
       airplane: '',
+      date: moment(new Date()).format('YYYY-MM-DD'),
       stashDisabled: false
     })
   }
@@ -86,11 +99,12 @@ class EntryForm extends Taro.Component {
 
     Taro.atMessage({
       'message': '已经删除.',
-      'type': 'warning',
+      'type': 'warning'
     })
     this.props.onDelete(formID)
   }
 
+  // XXX: 让搜索输入框变化时, 暂存按钮也高亮, 传递给子组建 SearchInput 调用.
   handleTaskChange = () => {
     this.setState({stashDisabled: false})
   }
@@ -112,18 +126,10 @@ class EntryForm extends Taro.Component {
                     onSubmit={this.handleSubmit}
                     onReset={this.handleReset}
                   >
-                    <View className='component-item__picker-group'>
-                      <Picker mode='date' value={this.state.date} onChange={this.handleDateChange}>
-                        <View className='component-item__picker-group__picker-item'>
-                          <View className='component-item__picker-group__picker-item__label'>请选择日期</View>
-                          <View className='component-item__picker-group__picker-item__value'>
-                            {this.state.date}
-                          </View>
-                        </View>
-                      </Picker>
-                    </View>
-
-                    <SearchInput formID={this.props.formID} onTaskChange={this.handleTaskChange}>
+                    <SearchInput
+                      formID={this.props.formID}
+                      onTaskChange={this.handleTaskChange}
+                    >
                     </SearchInput>
 
                     <View className='component-item__input-group'>
@@ -135,6 +141,17 @@ class EntryForm extends Taro.Component {
                         value={this.state.airplane}
                         onChange={this.handleAirplaneChange}
                       />
+                    </View>
+
+                    <View className='component-item__picker-group'>
+                      <Picker mode='date' value={this.state.date} onChange={this.handleDateChange}>
+                        <View className='component-item__picker-group__picker-item'>
+                          <View className='component-item__picker-group__picker-item__label'>请选择日期</View>
+                          <View className='component-item__picker-group__picker-item__value'>
+                            {this.state.date}
+                          </View>
+                        </View>
+                      </Picker>
                     </View>
 
                     <View className='component-item__btn-group'>

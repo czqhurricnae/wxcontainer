@@ -20,6 +20,10 @@ class Profile extends Component {
   }
 
   componentDidShow () {
+    /* XXX: 当 onLoad 之后, 先从 storage 获取用户信息 */
+    const userInfo = Taro.getStorageSync('userInfo')
+    this.setState({ userInfo })
+
     store.subscribe(() => this._updateUserInfo())
   }
 
@@ -43,13 +47,14 @@ class Profile extends Component {
   }
 
   _updateUserInfo = () => {
-    const { userInfo } = this.props
+    /* XXX: 当用户选择再次登录后, 用户信息可能发生改变, 使用 props 获取更新后的信息. */
+    const { userInfo }  = this.props
 
     this.setState({ userInfo })
   }
 
   render () {
-    const { userInfo } = this.props
+    const { userInfo } = this.state
 
     return (
       <View className='user-profile'>

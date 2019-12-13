@@ -4,7 +4,7 @@ import { AtInput } from 'taro-ui'
 import { ClSearchBar } from "mp-colorui"
 import { connect } from '@tarojs/redux'
 import _ from 'lodash'
-import { selectSearch, changeTask, changeTasktime } from '../actions.jsx'
+import { changeTask, changeCalculatedTime } from '../actions.jsx'
 import {
   tasksAPI,
   segmentationsAPI,
@@ -57,7 +57,7 @@ class SearchInput extends Component {
     // XXX: 让暂存键高亮.
     this.props.onTaskChange()
     // XXX: 将变化的 tasktime 暂存到 store 中.
-    this.props.onChangeTasktime(formID, tasktime)
+    this.props.onChangeCalculatedTime(formID, tasktime)
 
     return tasktime
   }
@@ -140,8 +140,7 @@ class SearchInput extends Component {
 
     this.setState({open: false, task: task, tasktime: tasktime})
     this.props.onChangeTask(formID, task, kind)
-    this.props.onChangeTasktime(formID, tasktime)
-    // this.props.onSelectSearch(formID, task, tasktime)
+    this.props.onChangeCalculatedTime(formID, tasktime)
   }
 
   handleFocus = () => {
@@ -203,14 +202,11 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return (
     {
-      onSelectSearch (formID, task, tasktime) {
-        dispatch(selectSearch(formID, task, tasktime))
-      },
       onChangeTask (formID, task, kind) {
         dispatch(changeTask(formID, task, kind))
       },
-      onChangeTasktime (formID, tasktime) {
-        dispatch(changeTasktime(formID, tasktime))
+      onChangeCalculatedTime (formID, tasktime) {
+        dispatch(changeCalculatedTime(formID, tasktime))
       }
     }
   )

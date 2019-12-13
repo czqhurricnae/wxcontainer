@@ -1,4 +1,4 @@
-import { ADD_ENTRY_FORM, DELETE_FORM, STASH_FORM, SELECT_SEARCH, CHANGE_TASK, CHANGE_TASKTIME } from './actionTypes.jsx'
+import { ADD_ENTRY_FORM, DELETE_FORM, STASH_FORM, CHANGE_TASK, CHANGE_CALCULATEDTIME } from './actionTypes.jsx'
 
 export default (state = { datasheets: {}, formList: [1, 2] }, action) => {
   switch (action.type) {
@@ -40,23 +40,6 @@ export default (state = { datasheets: {}, formList: [1, 2] }, action) => {
       )
     }
 
-    case SELECT_SEARCH: {
-      const formID = action.formID
-      const task = action.task
-      const tasktime = action.tasktime
-      const kind = action.kind
-      const obj = JSON.parse(JSON.stringify(state.datasheets))
-
-      obj[formID] = { ...obj[formID], task, tasktime, kind }
-
-      return (
-        {
-          formList: [...state.formList],
-          datasheets: obj
-        }
-      )
-    }
-
     case CHANGE_TASK: {
       const formID = action.formID
       const task = action.task
@@ -73,12 +56,12 @@ export default (state = { datasheets: {}, formList: [1, 2] }, action) => {
       )
     }
 
-    case CHANGE_TASKTIME: {
+    case CHANGE_CALCULATEDTIME: {
       const formID = action.formID
-      const tasktime = action.tasktime
+      const calculatedTime = action.calculatedTime
       const obj = JSON.parse(JSON.stringify(state.datasheets))
 
-      obj[formID] = { ...obj[formID], tasktime }
+      obj[formID] = { ...obj[formID], calculatedTime }
 
       return (
         {

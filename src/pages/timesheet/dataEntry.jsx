@@ -53,6 +53,7 @@ class DataEntry extends Taro.Component {
     const state = store.getState()
     const datasheets  = state.timesheet.datasheets
     const formIDArray = Object.keys(datasheets)
+    // XXX: timesheets 用来存放推送的工时对象的数组.
     const timesheets = new Array()
 
     if (formIDArray.length !== 0) {
@@ -106,12 +107,11 @@ class DataEntry extends Taro.Component {
   }
 
   _checkTimesheet = (formID, timesheet) => {
-
-
+    // TODO:
   }
 
   render () {
-    const { formList } = this.state
+    const { formList, disableSubmit, showNoticebar } = this.state
 
     const children = formList.map((item, index, formIDArrayay) => {
       return (<EntryForm formID={item}></EntryForm>)
@@ -120,7 +120,7 @@ class DataEntry extends Taro.Component {
     return (
       <View className='page flex-page' >
         <AtMessage></AtMessage>
-        {this.state.showNoticebar ?
+        {showNoticebar ?
          <AtNoticebar icon='volume-plus'>
            您没有登录, 或者后台没有您对应的工号, 无法进行工时提交!
          </AtNoticebar>
@@ -139,7 +139,7 @@ class DataEntry extends Taro.Component {
               className='dataEntry__submitButton at-col at-col-11'
               type='primary'
               onClick={this.handleSubmit}
-              disabled={this.state.disableSubmit}>
+              disabled={disableSubmit}>
               全部提交
             </AtButton>
           </View>

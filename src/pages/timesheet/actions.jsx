@@ -1,4 +1,4 @@
-import { ADD_ENTRY_FORM, DELETE_FORM, STASH_FORM, SELECT_SEARCH, CHANGE_TASK, CHANGE_TASKTIME } from './actionTypes.jsx'
+import { ADD_ENTRY_FORM, DELETE_FORM, STASH_FORM, CHANGE_TASK, CHANGE_CALCULATEDTIME } from './actionTypes.jsx'
 
 export const addEntryForm = () => ({
   type: ADD_ENTRY_FORM
@@ -15,13 +15,6 @@ export const stashForm = (formID, datasheet) => ({
   datasheet: datasheet
 })
 
-export const selectSearch = (formID, task, time) => ({
-  type: SELECT_SEARCH,
-  formID: formID,
-  task: task,
-  time: time
-})
-
 export const changeTask = (formID, task, kind) => ({
   type: CHANGE_TASK,
   formID: formID,
@@ -29,8 +22,8 @@ export const changeTask = (formID, task, kind) => ({
   kind: kind
 })
 
-export const changeTasktime = (formID, tasktime) => ({
-  type: CHANGE_TASKTIME,
+export const changeCalculatedTime = (formID, calculatedTime) => ({
+  type: CHANGE_CALCULATEDTIME,
   formID: formID,
-  tasktime: tasktime
+  calculatedTime: calculatedTime
 })

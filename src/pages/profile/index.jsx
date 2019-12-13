@@ -45,7 +45,7 @@ class Profile extends Component {
   _updateUserInfo = () => {
     const { userInfo } = this.props
 
-    this.setState({userInfo})
+    this.setState({ userInfo })
   }
 
   render () {
@@ -74,7 +74,10 @@ class Profile extends Component {
               {userInfo.login ? userInfo.nickName : '未登录'}
             </Text>
             <Text className='user-profile__info-NO'>
-              {userInfo.login ? userInfo.NO: ''}
+              {userInfo.login && userInfo.binded ? userInfo.number: ''}
+            </Text>
+            <Text className='user-profile__info-NO'>
+              {userInfo.login && !userInfo.binded ? '未绑定工号, 请到个人中心进行绑定.': ''}
             </Text>
             <Text className='user-profile__info-authority'>
               {userInfo.login ? userInfo.authority: ''}

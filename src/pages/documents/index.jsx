@@ -142,6 +142,10 @@ export default class Search extends Component {
     this.setState({open: false})
   }
 
+  handleIconClick = (index) => {
+    this.setState({open: !this.state.open})
+  }
+
   render () {
     const { isLoading, open, results, documents  } = this.state
 
@@ -158,7 +162,9 @@ export default class Search extends Component {
             result={results}
             onInput={this.handleSearchChange}
             onTouchResult={this.handleSelect}
-            onSearch={this.handleSearchClick} />
+            onSearch={this.handleSearchClick}
+            leftIcons={ open ? ['fold'] : ['unfold']}
+          />
         </View>
         <View>
           {documents.map((item, index, array) => (

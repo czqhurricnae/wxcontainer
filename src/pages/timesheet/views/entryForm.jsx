@@ -55,7 +55,7 @@ class EntryForm extends Taro.Component {
       stashDisabled: false
     }
 
-    this.handleSearchChange = _.debounce(this.handleSearchChange, 600,
+    this.handleSearchChange = _.debounce(this.handleSearchChange, 500,
                                          {leading: true})
   }
 
@@ -135,7 +135,7 @@ class EntryForm extends Taro.Component {
         results: _.filter(this.state.source, isMatch),
         open: Boolean(task.length),
         task: task
-      }, this.props.onChangeTask(formID, task, kind)), 800)
+      }, this.props.onChangeTask(formID, task, kind)), 500)
 
     }, 500)
   }
@@ -187,6 +187,10 @@ class EntryForm extends Taro.Component {
 
   handleBlur = () => {
     this.setState({open: false})
+  }
+
+  handleIconClick = (index) => {
+    this.setState({open: !this.state.open})
   }
 
   handleNumberChange = (number) => {
@@ -332,6 +336,8 @@ class EntryForm extends Taro.Component {
                         onFocus={this.handleFocus}
                         onBlur={this.handleBlur}
                         searchType={'none'}
+                        leftIcons={ open ? ['fold'] : ['unfold']}
+                        onIconClick={this.handleIconClick}
                       />
                       <View className='form__search-input-group__search-input-item'>
                         <View className='form__search-input-group__search-input-item__label'>

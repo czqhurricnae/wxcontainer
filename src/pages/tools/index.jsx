@@ -163,6 +163,10 @@ export default class Search extends Component {
     }
   }
 
+  handleIconClick = (index) => {
+    this.setState({open: !this.state.open})
+  }
+
   render () {
     const { isLoading, open, results, projectsTools  } = this.state
 
@@ -179,6 +183,8 @@ export default class Search extends Component {
           onInput={this.handleSearchChange}
           onTouchResult={this.handleSelect}
           onSearch={this.handleSearchClick}
+          leftIcons={ open ? ['fold'] : ['unfold']}
+          onIconClick={this.handleIconClick}
         />
         {projectsTools.map((item, index, array) => (
           <Table {...item} key={item.project_title}></Table>)

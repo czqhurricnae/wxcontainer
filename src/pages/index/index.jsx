@@ -5,7 +5,8 @@ import DocsHeader from '../doc-header/index.jsx'
 import Profile from '../profile/index.jsx'
 import searchImg from '../../assets/images/search.svg'
 import checkImg from '../../assets/images/check.svg'
-import userImg from '../../assets/images/user.svg'
+import chartImg from '../../assets/images/chart.svg'
+import IdImg from '../../assets/images/ID.svg'
 import maintenanceImg from '../../assets/images/maintenance.svg'
 import documentationImg from '../../assets/images/documentation.svg'
 import administratorImg from '../../assets/images/administrator.svg'
@@ -29,10 +30,13 @@ const dataTimesheet = [
 
 const dataUser= [
   {
-    link: '/pages/user/index'
+    link: '/pages/chart/index'
   },
   {
     link: '/pages/admin/index'
+  },
+  {
+    link: '/pages/user/index'
   }
 ]
 
@@ -127,12 +131,16 @@ export default class Index extends Taro.Component {
               <AtGrid data={
               [
                 {
-                  image: userImg,
-                  value: '个人中心'
+                  image: chartImg,
+                  value: '工时图示'
                 },
                 {
                   image: administratorImg,
                   value: '后台管理'
+                },
+                {
+                  image: IdImg,
+                  value: '个人中心'
                 }
               ]
               }onClick={this.handleClickUser}

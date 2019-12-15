@@ -43,7 +43,7 @@ export default class DocumentCard extends Component {
   }
 
   render () {
-    const document = this.props.document
+    const document  = this.props.document || {}
 
     return (
       <View className={'card-item'}>
@@ -52,7 +52,9 @@ export default class DocumentCard extends Component {
           thumb={downloadImg}
           note={'点击下载'}
           onClick={this.handleCardClick}>
-          处室: {document.office} 机型: {document.model} 章节号: ATA-{document.chapter}
+          处室: {document.office}
+          机型: {document.model}
+          章节号: ATA-{document.chapter}
         </AtCard>
       </View>
     )

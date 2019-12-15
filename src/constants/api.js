@@ -33,3 +33,6 @@ export const adminURL = `${host}/admin/`;
 
 // timesheet
 export const timesheetAPI = `${host}/api/timesheets`;
+
+// team
+export const teamsAPI = `${host}/api/teams`;

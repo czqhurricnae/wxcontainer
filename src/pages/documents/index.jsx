@@ -4,7 +4,7 @@ import { View } from '@tarojs/components'
 import { ClSearchBar } from "mp-colorui"
 import _ from 'lodash'
 import DocsHeader from '../doc-header/index.jsx'
-import { documentsAPI, documentAPI } from '@constants/api'
+import { documentsAPI, documentAPI, segmentationsAPI } from '@constants/api'
 import DocumentCard from './documentCard.jsx'
 
 import './index.scss'
@@ -73,8 +73,6 @@ export default class Search extends Component {
   }
 
   handleSegment = (search) => {
-    const segmentationsAPI = 'http://wxcontainer.applinzi.com/api/segmentations/'
-
     Taro.request({
         url: segmentationsAPI,
         method: 'POST',
@@ -120,7 +118,7 @@ export default class Search extends Component {
 
   handleSearchClick = (search) => {
     Taro.showToast({
-      title: `将会搜索所有关于  ${search} 的文档. `,
+      title: `将会搜索所有关于 ${search} 的文档. `,
       icon: 'none'
     })
 

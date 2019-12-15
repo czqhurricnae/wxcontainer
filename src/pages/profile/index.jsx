@@ -17,10 +17,11 @@ class Profile extends Component {
 
   constructor () {
     super(...arguments)
+    this.state = {userInfo: {}}
   }
 
   componentDidShow () {
-    /* XXX: 当 onLoad 之后, 先从 storage 获取用户信息 */
+    /* XXX: 当 onLoad 之后, 先从 storage 获取用户信息. */
     const userInfo = Taro.getStorageSync('userInfo')
     this.setState({ userInfo })
 

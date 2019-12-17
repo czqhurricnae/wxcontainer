@@ -4,6 +4,7 @@ import { Provider } from '@tarojs/redux'
 import Profile from './pages/profile'
 import TimeSheet from './pages/timesheet'
 import UserLogin from './pages/authorize'
+import User from './pages/user'
 import store from './store.jsx'
 
 import './app.scss'
@@ -53,6 +54,7 @@ class App extends Component {
         <Profile />
         <TimeSheet />
         <UserLogin />
+        <User/>
       </Provider>
     )
   }

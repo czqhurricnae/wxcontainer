@@ -57,7 +57,7 @@ class Index extends Taro.Component {
         console.log(error)
 
         Taro.atMessage({
-          'message': '微信登录失败, 请检查您的网络连接.',
+          'message': '微信登录失败, 请检查您的网络连接!',
           'type': 'error',
         })
       })
@@ -102,9 +102,11 @@ class Index extends Taro.Component {
               Taro.setStorageSync('userInfo', userInfo)
               this.props.onLogin(userInfo)
 
-              this.setState({showToast: true,
-                             toastText: '登录成功, 将跳转回首页.',
-                             showAuthModal: false})
+              this.setState({
+                showToast: true,
+                toastText: '登录成功, 将跳转回首页.',
+                showAuthModal: false
+              })
 
               setTimeout(() => Taro.redirectTo({ url: '/pages/index/index' }), 3000)
             }
@@ -113,7 +115,7 @@ class Index extends Taro.Component {
             console.log(error)
 
             Taro.atMessage({
-              'message': `与后台服务器连接时出现错误, 错误信息为: ${error.errMsg}.`,
+              'message': `与后台服务器连接时出现错误, 错误信息为: ${error.errMsg}!`,
               'type': 'warning',
             })
           })
@@ -123,7 +125,7 @@ class Index extends Taro.Component {
         console.log(error)
 
         Taro.atMessage({
-          'message': '检查 sessionKey 出现错误, 请关闭小程序后重新登录.',
+          'message': '检查 sessionKey 出现错误, 请关闭小程序后重新登录!',
           'type': 'warning',
         })
       })
@@ -140,10 +142,7 @@ class Index extends Taro.Component {
   }
 
   render () {
-    const showAuthModal= this.state.showAuthModal
-    const showToast= this.state.showToast
-    const toastText = this.state.toastText
-    const getAuthorize = this.state.getAuthorize
+    const { showAuthModal, showToast, toastText, getAuthorize } = this.state
 
     return (
       <View className='user-login'>
@@ -195,4 +194,4 @@ const mapDispatchToProps = (dispatch) => {
   )
 }
 
-export default connect( mapStateToProps, mapDispatchToProps)(Index)
+export default connect(mapStateToProps, mapDispatchToProps)(Index)

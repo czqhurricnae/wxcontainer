@@ -46,6 +46,7 @@ class DataEntry extends Taro.Component {
 
   _updateFormList = () => {
     const { formList } = this.props
+
     this.setState({ formList })
   }
 

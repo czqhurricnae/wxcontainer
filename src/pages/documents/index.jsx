@@ -10,6 +10,10 @@ import DocumentCard from './documentCard.jsx'
 import './index.scss'
 
 export default class Search extends Component {
+  config = {
+    navigationBarTitleText: '文档查询'
+  }
+
   constructor () {
     super(...arguments)
 
@@ -24,10 +28,6 @@ export default class Search extends Component {
 
     this.handleSearchChange = _.debounce(this.handleSearchChange, 500,
                                          {leading: true})
-  }
-
-  config : Config = {
-    navigationBarTitleText: '文档查询'
   }
 
   componentDidMount () {

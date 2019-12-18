@@ -7,10 +7,6 @@ import Echart from 'echarts12'
 import "./chart.scss";
 
 export default class Chart extends Component {
-  config = {
-    navigationBarTitleText: "工时表"
-  };
-
   constructor() {
     super(...arguments)
     const date = new Date()
@@ -357,7 +353,7 @@ export default class Chart extends Component {
         <AtMessage></AtMessage>
         {this.state.showNoticebar ?
          <AtNoticebar icon='volume-plus'>
-           您没有登录, 或者没有绑定工号, 无法查看工时记录, 请到个人中心绑定!
+           您没有登录, 或者没有绑定工号, 无法查看工时记录, 请到帐号管理绑定!
          </AtNoticebar>
         : ''}
         <Echart option={option} ec={{disableTouch: false}} style={'height: 400px'} ></Echart>

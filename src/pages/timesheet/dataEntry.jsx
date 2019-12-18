@@ -123,7 +123,7 @@ class DataEntry extends Taro.Component {
         <AtMessage></AtMessage>
         {showNoticebar ?
          <AtNoticebar icon='volume-plus'>
-           您没有登录, 或者没有绑定工号, 无法进行工时提交, 请到个人中心绑定!
+           您没有登录, 或者没有绑定工号, 无法进行工时提交, 请到帐号管理绑定!
          </AtNoticebar>
          : ''}
         <DocsHeader title='工时录入' />

@@ -15,6 +15,10 @@ import DocsHeader from '../doc-header/index.jsx'
 import './index.scss'
 
 class Bind extends Component {
+  config = {
+    navigationBarTitleText: '工号绑定'
+  }
+
   constructor () {
     super(...arguments)
 

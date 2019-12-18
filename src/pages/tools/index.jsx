@@ -15,6 +15,10 @@ from '@constants/api'
 import './index.scss'
 
 export default class Search extends Component {
+  config = {
+    navigationBarTitleText: '工具查询'
+  }
+
   constructor () {
     super(...arguments)
 
@@ -32,10 +36,6 @@ export default class Search extends Component {
   }
 
   componentWillMount () { }
-
-  config : Config = {
-    navigationBarTitleText: '工具查询'
-  }
 
   componentDidMount () {
     Taro.request({ url: projectsAPI, method: 'GET' })

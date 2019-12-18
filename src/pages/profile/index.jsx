@@ -84,7 +84,7 @@ class Profile extends Component {
               {userInfo.login && userInfo.binded ? userInfo.number: ''}
             </Text>
             <Text className='user-profile__info-NO'>
-              {userInfo.login && !userInfo.binded ? '未绑定工号, 请到个人中心进行绑定.': ''}
+              {userInfo.login && !userInfo.binded ? '未绑定工号, 请到帐号管理进行绑定.': ''}
             </Text>
             <Text className='user-profile__info-authority'>
               {userInfo.login ? userInfo.authority: ''}

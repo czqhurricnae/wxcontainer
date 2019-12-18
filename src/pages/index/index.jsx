@@ -41,13 +41,12 @@ const dataUser= [
 ]
 
 export default class Index extends Taro.Component {
+  config = {
+    navigationBarTitleText: '导航页面'
+  }
 
   constructor () {
     super(...arguments)
-  }
-
-  config = {
-    navigationBarTitleText: '导航页面'
   }
 
   static defaultProps = {
@@ -140,7 +139,7 @@ export default class Index extends Taro.Component {
                 },
                 {
                   image: IdImg,
-                  value: '个人中心'
+                  value: '帐号管理'
                 }
               ]
               }onClick={this.handleClickUser}

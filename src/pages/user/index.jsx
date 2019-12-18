@@ -7,6 +7,10 @@ import { logout } from '../authorize/actions.jsx'
 import './index.scss'
 
 class User extends Component {
+  config = {
+    navigationBarTitleText: '账号管理'
+  }
+
   constructor () {
     super(...arguments)
 

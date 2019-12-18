@@ -110,6 +110,14 @@ class Index extends Taro.Component {
 
               setTimeout(() => Taro.redirectTo({ url: '/pages/index/index' }), 3000)
             }
+            else {
+              console.log(res.statusCode, res.data.message)
+
+              Taro.atMessage({
+                'message': `获取授权时出现错误, 错误信息为: ${res.data.message}!`,
+                'type': 'error'
+              })
+            }
           })
           .catch((error) => {
             console.log(error)
@@ -129,8 +137,6 @@ class Index extends Taro.Component {
           'type': 'warning',
         })
       })
-
-    Taro.setStorageSync('isHomeLongHideAuthModal', true)
 
     this.setState({
       showAuthModal: false

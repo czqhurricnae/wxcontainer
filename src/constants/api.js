@@ -25,6 +25,9 @@ export const projectsToolsAPI = `${host}/api/projects`;
 export const code2sessionAPI = `${host}/api/code2session`;
 export const userInfoAPI = `${host}/api/userInfo`;
 
+// update user info
+export const updateUserInfoAPI = `${host}/api/updateUserInfo`;
+
 // task
 export const tasksAPI = `${host}/api/tasks`;
 

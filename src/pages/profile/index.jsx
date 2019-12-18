@@ -50,6 +50,7 @@ class Profile extends Component {
   _updateUserInfo = () => {
     /* XXX: 当用户选择再次登录后, 用户信息可能发生改变, 使用 props 获取更新后的信息. */
     const { userInfo }  = this.props
+    console.log(userInfo)
 
     this.setState({ userInfo })
   }

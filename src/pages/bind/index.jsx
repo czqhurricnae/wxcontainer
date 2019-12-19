@@ -8,6 +8,7 @@ import {
 } from 'taro-ui'
 import{ ClForm, ClFormItem, ClInput } from 'mp-colorui'
 import { connect } from '@tarojs/redux'
+import _ from 'lodash'
 import { teamsAPI, updateUserInfoAPI } from '@constants/api'
 import { getUserInfo } from '../authorize/actions.jsx'
 import DocsHeader from '../doc-header/index.jsx'
@@ -61,8 +62,8 @@ class Bind extends Component {
     Taro.request({ url: teamsAPI, method: 'GET' })
       .then(res => {
         if (res.statusCode === 200) {
-          const teamMaps = res.data
-          const teams = Object.keys(teamMaps)
+          const teams = Object.values(res.data)
+          const teamMaps = _.invert(res.data)
 
           this.setState({ teams, teamMaps })
         }

@@ -48,7 +48,8 @@ class EntryForm extends Taro.Component {
       task: '',
       tasktime: '',
       calculatedTime : '',
-      number: 1,
+      // XXX: 工作者人数.
+      workerNumber: 1,
       completed: '全部完成',
       open: false,
       isLoading: false,
@@ -169,15 +170,16 @@ class EntryForm extends Taro.Component {
     const task = results[index].title
     const tasktime = results[index].tasktime
     const kind = results[index].kind
-    const { number } = this.state
-    const calculatedTime = Number(tasktime) / number
+    const workerNumber = results[index].worker_number
+    const rawCalculatedTime = Number(tasktime) / workerNumber
+    const calculatedTime = rawCalculatedTime.toFixed(1)
 
     Taro.showToast({
       title: `您点击了 ${task} .`,
       icon: 'none'
     })
 
-    this.setState({ open: false, task, tasktime, calculatedTime })
+    this.setState({ open: false, task, tasktime, calculatedTime, workerNumber })
     this.props.onChangeTask(formID, task, kind)
     this.props.onChangeCalculatedTime(formID, calculatedTime)
   }
@@ -194,7 +196,7 @@ class EntryForm extends Taro.Component {
     this.setState({open: !this.state.open})
   }
 
-  handleNumberChange = (number) => {
+  handleWorkerNumberChange = (workerNumber) => {
     const { formID } = this.props
     const tasktime = Number(this.state.tasktime)
 
@@ -206,8 +208,8 @@ class EntryForm extends Taro.Component {
       })
     }
     else {
-      const calculatedTime = tasktime / number
-      this.setState({ number, calculatedTime })
+      const calculatedTime = tasktime / workerNumber
+      this.setState({ workerNumber, calculatedTime })
       this.props.onChangeCalculatedTime(formID, calculatedTime)
     }
   }
@@ -272,7 +274,7 @@ class EntryForm extends Taro.Component {
       task: '',
       tasktime: '',
       calculatedTime: '',
-      number: 1,
+      workerNumber: 1,
       open: false,
       isLoading: false,
       stashDisabled: false,
@@ -301,7 +303,7 @@ class EntryForm extends Taro.Component {
       task,
       calculatedTime,
       airplane,
-      number,
+      workerNumber,
       date,
       showNoticebar
     } = this.state
@@ -377,8 +379,8 @@ class EntryForm extends Taro.Component {
                         min={1}
                         max={10}
                         step={1}
-                        value={number}
-                        onChange={this.handleNumberChange}
+                        value={workerNumber}
+                        onChange={this.handleWorkerNumberChange}
                       >
                       </AtInputNumber>
                       <ClRadio

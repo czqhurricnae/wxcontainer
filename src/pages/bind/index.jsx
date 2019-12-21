@@ -78,6 +78,10 @@ class Bind extends Component {
       })
   }
 
+  handleNickNameChange = (nickName) => {
+    this.setState({nickName: nickName})
+  }
+
   handleNumberChange = (value) => {
     this.setState({
       model: {
@@ -101,6 +105,13 @@ class Bind extends Component {
     if (this.state.teamChecked == '') {
       Taro.showToast({
         'title': '请先选择一个班组!',
+        'icon': 'none'
+      })
+    }
+
+    if (this.state.nickName == '') {
+      Taro.showToast({
+        'title': '请先输入名称!',
         'icon': 'none'
       })
     }
@@ -178,7 +189,8 @@ class Bind extends Component {
       toastText,
       model,
       teams,
-      teamChecked
+      teamChecked,
+      nickName
     } = this.state
 
     const rules = {
@@ -242,7 +254,8 @@ class Bind extends Component {
                     title='名称'
                     type='text'
                     placeholder='名称'
-                    value={this.state.nickName}
+                    value={nickName}
+                    onBlur={this.handleNickNameChange}
                   />
                 </ClFormItem>
                 <ClFormItem prop='number' required>

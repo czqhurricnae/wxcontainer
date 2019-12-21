@@ -15,6 +15,9 @@ import {
   stashForm,
   changeTask,
   changeCalculatedTime,
+  changeAirplane,
+  changeCompleted,
+  changeDate,
   clearDatasheets
 } from '../actions.jsx'
 import {
@@ -33,6 +36,10 @@ class EntryForm extends Taro.Component {
     onStash: () => {},
     onChangeTask: () => {},
     onChangeCalculatedTime: () => {},
+    onChangeAirplane: () => {},
+    onChangeCompleted: () => {},
+    onChangeDate: () => {},
+    onClearDatasheets: () => {},
     formID: ''
   }
 
@@ -74,21 +81,31 @@ class EntryForm extends Taro.Component {
         this.setState({ showNoticebar: true })
       })
   }
+  componentWillUnmount () {
+    console.log('entryForm.jsx -> EntryForm.componentWillUnmount -> 79')
+  }
 
   handleAirplaneChange = (value) => {
+    const { formID } = this.props
+
     this.setState({
       airplane: value,
       stashDisabled: false
     })
+    this.props.onChangeAirplane(formID, value)
 
     return value
   }
 
   handleDateChange = (event) => {
+    const { formID } = this.props
+    const date = event.detail.value
+
     this.setState({
-      date: event.detail.value,
+      date: date,
       stashDisabled: false
     })
+    this.props.onChangeDate(formID, date)
   }
 
   handleCalculatedTimeChange = (calculatedTime) => {
@@ -208,20 +225,25 @@ class EntryForm extends Taro.Component {
       })
     }
     else {
-      const calculatedTime = tasktime / workerNumber
-      this.setState({ workerNumber, calculatedTime })
+      const rawCalculatedTime = tasktime / workerNumber
+      const calculatedTime = rawCalculatedTime.toFixed(1)
+
+      this.setState({ workerNumber, calculatedTime, stashDisabled: false })
       this.props.onChangeCalculatedTime(formID, calculatedTime)
     }
   }
 
   handleRadioChange = (value) => {
-    this.setState({ completed: value })
+    const { formID } = this.props
+
+    this.setState({ completed: value, stashDisabled: false })
+    this.props.onChangeCompleted(formID, value)
   }
 
+  // XXX: 进行暂存.
   handleSubmit = (event) => {
     const { formID } = this.props
     const propsDatasheet = this.props.datasheets[formID] || {}
-    console.log(propsDatasheet)
     const submitDatasheet = {
       date: this.state.date,
       airplane: this.state.airplane,
@@ -445,6 +467,18 @@ const mapDispatchToProps = (dispatch) => {
       },
       onChangeCalculatedTime (formID, tasktime) {
         dispatch(changeCalculatedTime(formID, tasktime))
+      },
+      onChangeAirplane (formID, airplane) {
+        dispatch(changeAirplane(formID, airplane))
+      },
+      onChangeCompleted (formID, completed) {
+        dispatch(changeCompleted(formID, completed))
+      },
+      onChangeDate (formID, date) {
+        dispatch(changeDate(formID, date))
+      },
+      onClearDatasheets () {
+        dispatch(clearDatasheets())
       }
     }
   )

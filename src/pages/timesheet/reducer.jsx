@@ -1,6 +1,17 @@
-import { ADD_ENTRY_FORM, DELETE_FORM, STASH_FORM, CHANGE_TASK, CHANGE_CALCULATEDTIME } from './actionTypes.jsx'
+import {
+  ADD_ENTRY_FORM,
+  DELETE_FORM,
+  STASH_FORM,
+  CHANGE_TASK,
+  CHANGE_CALCULATEDTIME,
+  CHANGE_AIRPLANE,
+  CHANGE_COMPLETED,
+  CHANGE_DATE,
+  CLEAR_DATASHEETS } from './actionTypes.jsx'
 
-export default (state = { datasheets: {}, formList: [1, 2] }, action) => {
+const initialState = { datasheets: {}, formList: [1, 2] }
+
+export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_ENTRY_FORM: {
       return (
@@ -74,6 +85,59 @@ export default (state = { datasheets: {}, formList: [1, 2] }, action) => {
         {
           formList: [...state.formList],
           datasheets: obj
+        }
+      )
+    }
+
+    case CHANGE_AIRPLANE: {
+      const formID = action.formID
+      const airplane = action.airplane
+      const obj = JSON.parse(JSON.stringify(state.datasheets))
+
+      obj[formID] = { ...obj[formID], airplane }
+
+      return (
+        {
+          formList: [...state.formList],
+          datasheets: obj
+        }
+      )
+    }
+
+    case CHANGE_COMPLETED: {
+      const formID = action.formID
+      const completed = action.completed
+      const obj = JSON.parse(JSON.stringify(state.datasheets))
+
+      obj[formID] = { ...obj[formID], completed }
+
+      return (
+        {
+          formList: [...state.formList],
+          datasheets: obj
+        }
+      )
+    }
+
+    case CHANGE_DATE: {
+      const formID = action.formID
+      const date = action.date
+      const obj = JSON.parse(JSON.stringify(state.datasheets))
+
+      obj[formID] = { ...obj[formID], date }
+
+      return (
+        {
+          formList: [...state.formList],
+          datasheets: obj
+        }
+      )
+    }
+
+    case CLEAR_DATASHEETS: {
+      return (
+        {
+          ...initialState
         }
       )
     }

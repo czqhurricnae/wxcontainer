@@ -7,6 +7,8 @@ import {
   CHANGE_AIRPLANE,
   CHANGE_COMPLETED,
   CHANGE_DATE,
+  CHANGE_STASHED,
+  RESET_FORM,
   CLEAR_DATASHEETS } from './actionTypes.jsx'
 
 const initialState = { datasheets: {}, formList: [1, 2] }
@@ -134,10 +136,40 @@ export default (state = initialState, action) => {
       )
     }
 
+    case CHANGE_STASHED: {
+      const formID = action.formID
+      const stashed = action.stashed
+      const obj = JSON.parse(JSON.stringify(state.datasheets))
+
+      obj[formID] = { ...obj[formID], stashed, formID }
+
+      return (
+        {
+          formList: [...state.formList],
+          datasheets: obj
+        }
+      )
+    }
+
+    case RESET_FORM: {
+      const formID = action.formID
+      const obj = JSON.parse(JSON.stringify(state.datasheets))
+
+      obj[formID] = {}
+
+      return (
+        {
+          formList: [...state.formList],
+          datasheets: obj
+        }
+      )
+    }
+
     case CLEAR_DATASHEETS: {
       return (
         {
-          ...initialState
+          formList: [...initialState.formList],
+          datasheets: { ...initialState.datasheets }
         }
       )
     }

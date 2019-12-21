@@ -18,7 +18,8 @@ import {
   changeAirplane,
   changeCompleted,
   changeDate,
-  clearDatasheets
+  resetForm,
+  changeStashed
 } from '../actions.jsx'
 import {
   tasksAPI,
@@ -39,7 +40,8 @@ class EntryForm extends Taro.Component {
     onChangeAirplane: () => {},
     onChangeCompleted: () => {},
     onChangeDate: () => {},
-    onClearDatasheets: () => {},
+    onResetForm: () => {},
+    onChangeStashed: () => {},
     formID: ''
   }
 
@@ -81,9 +83,6 @@ class EntryForm extends Taro.Component {
         this.setState({ showNoticebar: true })
       })
   }
-  componentWillUnmount () {
-    console.log('entryForm.jsx -> EntryForm.componentWillUnmount -> 79')
-  }
 
   handleAirplaneChange = (value) => {
     const { formID } = this.props
@@ -93,6 +92,7 @@ class EntryForm extends Taro.Component {
       stashDisabled: false
     })
     this.props.onChangeAirplane(formID, value)
+    this.props.onChangeStashed(formID, false)
 
     return value
   }
@@ -106,6 +106,7 @@ class EntryForm extends Taro.Component {
       stashDisabled: false
     })
     this.props.onChangeDate(formID, date)
+    this.props.onChangeStashed(formID, false)
   }
 
   handleCalculatedTimeChange = (calculatedTime) => {
@@ -118,6 +119,7 @@ class EntryForm extends Taro.Component {
 
     // XXX: 将变化的 calculatedTime 暂存到 store 中.
     this.props.onChangeCalculatedTime(formID, calculatedTime)
+    this.props.onChangeStashed(formID, false)
 
     return calculatedTime
   }
@@ -127,6 +129,7 @@ class EntryForm extends Taro.Component {
     const kind = '其他'
 
     this.setState({ isLoading: true, task, stashDisabled: false })
+    this.props.onChangeStashed(formID, false)
 
     setTimeout(() => this.handleSegment(task))
 
@@ -185,9 +188,11 @@ class EntryForm extends Taro.Component {
     const { results } = this.state
     const formID = this.props.formID
     const task = results[index].title
-    const tasktime = results[index].tasktime
+    // XXX: 后台没有工时传递.
+    const tasktime = results[index].tasktime || 1
     const kind = results[index].kind
-    const workerNumber = results[index].worker_number
+    // XXX: 后台没有工作人数传递, 防止出现计算工时为 Infinity.
+    const workerNumber = results[index].worker_number || 1
     const rawCalculatedTime = Number(tasktime) / workerNumber
     const calculatedTime = rawCalculatedTime.toFixed(1)
 
@@ -199,6 +204,7 @@ class EntryForm extends Taro.Component {
     this.setState({ open: false, task, tasktime, calculatedTime, workerNumber })
     this.props.onChangeTask(formID, task, kind)
     this.props.onChangeCalculatedTime(formID, calculatedTime)
+    this.props.onChangeStashed(formID, false)
   }
 
   handleFocus = () => {
@@ -230,6 +236,7 @@ class EntryForm extends Taro.Component {
 
       this.setState({ workerNumber, calculatedTime, stashDisabled: false })
       this.props.onChangeCalculatedTime(formID, calculatedTime)
+      this.props.onChangeStashed(formID, false)
     }
   }
 
@@ -238,6 +245,7 @@ class EntryForm extends Taro.Component {
 
     this.setState({ completed: value, stashDisabled: false })
     this.props.onChangeCompleted(formID, value)
+    this.props.onChangeStashed(formID, false)
   }
 
   // XXX: 进行暂存.
@@ -248,8 +256,11 @@ class EntryForm extends Taro.Component {
       date: this.state.date,
       airplane: this.state.airplane,
       completed: this.state.completed,
-      stashed: true
+      stashed: true,
+      formID: formID
     }
+
+    console.log('entryForm.jsx -> EntryForm.handleSubmit -> 266 -> propsDatasheet', propsDatasheet)
 
     if (submitDatasheet.airplane == '') {
       Taro.showToast({
@@ -283,11 +294,15 @@ class EntryForm extends Taro.Component {
       return
     }
 
+    console.log('entryForm.jsx -> EntryForm.handleSubmit -> 300 -> submitDatasheet', submitDatasheet)
+
     this.props.onStash(formID, submitDatasheet)
     this.setState({stashDisabled: true})
   }
 
   handleReset = (event) => {
+    const { formID } = this.props
+
     this.setState({
       results: [],
       segmentations: [],
@@ -300,9 +315,10 @@ class EntryForm extends Taro.Component {
       open: false,
       isLoading: false,
       stashDisabled: false,
-      showNoticebar: false
+      showNoticebar: false,
     })
 
+    this.props.onResetForm(formID)
     this.forceUpdate()
   }
 
@@ -313,6 +329,7 @@ class EntryForm extends Taro.Component {
       'message': '已经删除.',
       'type': 'warning'
     })
+
     this.props.onDelete(formID)
   }
 
@@ -477,8 +494,11 @@ const mapDispatchToProps = (dispatch) => {
       onChangeDate (formID, date) {
         dispatch(changeDate(formID, date))
       },
-      onClearDatasheets () {
-        dispatch(clearDatasheets())
+      onResetForm (formID) {
+        dispatch(resetForm(formID))
+      },
+      onChangeStashed (formID, stashed) {
+        dispatch(changeStashed(formID, stashed))
       }
     }
   )

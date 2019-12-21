@@ -4,7 +4,7 @@ import { View } from '@tarojs/components'
 import { AtButton, AtMessage, AtNoticebar } from 'taro-ui'
 import DocsHeader from '../doc-header/index.jsx'
 import EntryForm from './views/entryForm.jsx'
-import { addEntryForm } from './actions.jsx'
+import { addEntryForm, clearDatasheets } from './actions.jsx'
 import store from '../../store.jsx'
 import { timesheetsAPI } from '@constants/api'
 
@@ -12,7 +12,8 @@ import './dataEntry.scss'
 
 class DataEntry extends Taro.Component {
   static defaultProps = {
-    onAddEntryForm: () => {}
+    onAddEntryForm: () => {},
+    onClearDatasheets: () => {}
   }
 
   constructor (props) {
@@ -40,6 +41,11 @@ class DataEntry extends Taro.Component {
     }
   }
 
+  componentWillUnmount () {
+    // XXX: 清除 store 中所有的表单的数据.
+    this.props.onClearDatasheets()
+  }
+
   handleAddEntryForm = () => {
     this.props.onAddEntryForm()
   }
@@ -54,10 +60,40 @@ class DataEntry extends Taro.Component {
     const state = store.getState()
     const datasheets  = state.timesheets.datasheets
     const formIDArray = Object.keys(datasheets)
+    const newData = {}
     // XXX: timesheets 用来存放推送的工时对象的数组.
     const timesheets = new Array()
 
     if (formIDArray.length !== 0) {
+      // XXX: 检查 store 中所有的 timesheet 都已经被暂存, 避免出现用户点击重置后
+      // 却还可以提交的情况.
+      for (let item of Object.values(datasheets)) {
+        if (item.stashed === undefined) {
+          // XXX: 没有 stashed 字段说明没有暂存.
+          Taro.atMessage({
+            'message': '请确保先暂存再提交!',
+            'type': 'warning'
+          })
+
+          return
+        }
+        else {
+          if (newData[item.stashed] === undefined) {
+            newData[item.stashed] = [];
+          }
+          newData[item.stashed].splice(newData[item.stashed].length, 0, item.formID);
+        }
+      }
+
+      if (newData['false'] && newData['false'].length > 0) {
+        Taro.atMessage({
+          'message': '请确保先暂存再提交!',
+          'type': 'warning'
+        })
+
+        return
+      }
+
       formIDArray.map((item, index, array) => {
         const timesheet = datasheets[item]
         const userInfo = Taro.getStorageSync('userInfo')
@@ -69,7 +105,7 @@ class DataEntry extends Taro.Component {
         timesheets.push({...timesheet, name: name, number: number, belongto_team: belongto_team})
       })
 
-      console.log('dataEntry.jsx -> DataEntry.handleSubmit -> 72 -> timesheets', timesheets)
+      console.log('dataEntry.jsx -> DataEntry.handleSubmit -> 108 -> timesheets', timesheets)
 
       Taro.request({
         url: timesheetsAPI,
@@ -80,21 +116,25 @@ class DataEntry extends Taro.Component {
         data: JSON.stringify({timesheets: timesheets})
       })
         .then(res => {
-          if (res.statusCode === 200) {
+          if (res.statusCode === 201) {
             Taro.showToast({
-              title: '工时提交成功.',
+              title: `提交 ${res.data.count} 个工时成功.`,
               icon: 'none',
               duration: 2000
             })
           }
           else {
+            console.log(res.statusCode, res.data.message)
+
             Taro.atMessage({
-              'message': '提交时出现错误!',
+              'message': `提交时出现错误,错误信息为 ${res.data.message}!`,
               'type': 'warning',
             })
           }
         })
         .catch((error) => {
+          console.log(error)
+
           Taro.atMessage({
             'message': `提交时出现错误, 错误信息为: ${error.errMsg}!`,
             'type': 'warning',
@@ -107,11 +147,9 @@ class DataEntry extends Taro.Component {
         'message': '请确保先暂存再提交!',
         'type': 'warning'
       })
-    }
-  }
 
-  _checkTimesheet = (formID, timesheet) => {
-    // TODO:
+      return
+    }
   }
 
   render () {
@@ -165,9 +203,12 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return (
     {
-        onAddEntryForm () {
+      onAddEntryForm () {
           dispatch(addEntryForm())
-        }
+        },
+      onClearDatasheets () {
+        dispatch(clearDatasheets())
+      }
     }
   )
 }

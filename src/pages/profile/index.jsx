@@ -25,6 +25,8 @@ class Profile extends Component {
     const userInfo = Taro.getStorageSync('userInfo')
     this.setState({ userInfo })
 
+    console.log('index.jsx<profile> -> Profile.componentDidShow -> 28 -> userInfo', userInfo)
+
     store.subscribe(() => this._updateUserInfo())
   }
 
@@ -36,21 +38,12 @@ class Profile extends Component {
     }
   }
 
-  getUid = (uid) => {
-    if (!uid || !/@/.test(uid)) {
-      return ''
-    }
-
-    const [username, suffix] = uid.split('@')
-    const firstLetter  = username[0]
-    const lastLetter = username[username.length - 1]
-    return `${firstLetter}****${lastLetter}@${suffix}`
-  }
-
   _updateUserInfo = () => {
     /* XXX: 当用户选择再次登录后, 用户信息可能发生改变, 使用 props 获取更新后的信息. */
-    const { userInfo }  = this.props
-    console.log(userInfo)
+    const { userInfo, timesheets }  = this.props
+
+    console.log('index.jsx<profile> -> Profile._updateUserInfo -> 45', userInfo)
+    console.log('index.jsx<profile> -> Profile._updateUserInfo -> 46 -> timesheets', timesheets)
 
     this.setState({ userInfo })
   }
@@ -92,9 +85,6 @@ class Profile extends Component {
             {userInfo.login && userInfo.authority == '管理者' ?
              <View className='user-profile__info-wrap'>
                <Image className='user-profile__info-level' src={level01} />
-               <Text className='user-profile__info-uid'>
-                 {this.getUid(userInfo.uid)}
-               </Text>
              </View> : ''
             }
             {!userInfo.login ?
@@ -112,7 +102,8 @@ class Profile extends Component {
 const mapStateToProps = (state) => {
   return (
     {
-      userInfo: state.userInfo
+      userInfo: state.userInfo,
+      timesheets: state.timesheets
     }
   )
 }

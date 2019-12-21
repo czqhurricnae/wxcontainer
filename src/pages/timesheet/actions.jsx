@@ -7,6 +7,8 @@ import {
   CHANGE_AIRPLANE,
   CHANGE_COMPLETED,
   CHANGE_DATE,
+  CHANGE_STASHED,
+  RESET_FORM,
   CLEAR_DATASHEETS } from './actionTypes.jsx'
 
 export const addEntryForm = () => ({
@@ -43,22 +45,29 @@ export const changeAirplane = (formID, airplane) => ({
   airplane: airplane
 })
 
-export const changeCompleted = (formID, completed) => (
-  {
-    type: CHANGE_COMPLETED,
-    formID: formID,
-    completed: completed
-  }
-)
+export const changeCompleted = (formID, completed) => ({
+  type: CHANGE_COMPLETED,
+  formID: formID,
+  completed: completed
+})
 
-export const changeDate = (formID, date) => (
-  {
-    type: CHANGE_DATE,
-    formID: formID,
-    date: date
-  }
-)
+export const changeDate = (formID, date) => ({
+  type: CHANGE_DATE,
+  formID: formID,
+  date: date
+})
+
+export const changeStashed = (formID, stashed) => ({
+  type: CHANGE_STASHED,
+  formID: formID,
+  stashed: stashed
+})
+
+export const resetForm = (formID) => ({
+  type: RESET_FORM,
+  formID: formID
+})
 
 export const clearDatasheets = () => ({
-  tyep: CLEAR_DATASHEETS
+  type: CLEAR_DATASHEETS
 })

@@ -30,7 +30,14 @@ export default (state = { datasheets: {}, formList: [1, 2] }, action) => {
       const datasheet = action.datasheet
       const obj = JSON.parse(JSON.stringify(state.datasheets))
 
-      obj[formID] = { ...datasheet, ...obj[formID] }
+      // FIXME: 此处有个 bug, 已经修复.
+      // XXX: 对于展开运算符, 后者会覆盖前者
+      // obj[formID] = { ...datasheet, ...obj[formID] }
+      // 这样的写法会导致原来的表单的数据会覆盖我们新的数据,
+      // 具体表现就是用户新提交的 date, airplane, completed, stashed 字段都被
+      // 旧数据覆盖.
+
+      obj[formID] = { ...obj[formID], ...datasheet }
 
       return (
         {

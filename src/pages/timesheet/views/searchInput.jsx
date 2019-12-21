@@ -194,7 +194,7 @@ class SearchInput extends Component {
 const mapStateToProps = (state) => {
   return (
     {
-      datasheets: state.timesheet.datasheets
+      datasheets: state.timesheets.datasheets
     }
   )
 }

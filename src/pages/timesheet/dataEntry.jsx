@@ -6,7 +6,7 @@ import DocsHeader from '../doc-header/index.jsx'
 import EntryForm from './views/entryForm.jsx'
 import { addEntryForm } from './actions.jsx'
 import store from '../../store.jsx'
-import { timesheetAPI } from '@constants/api'
+import { timesheetsAPI } from '@constants/api'
 
 import './dataEntry.scss'
 
@@ -52,7 +52,7 @@ class DataEntry extends Taro.Component {
 
   handleSubmit = () => {
     const state = store.getState()
-    const datasheets  = state.timesheet.datasheets
+    const datasheets  = state.timesheets.datasheets
     const formIDArray = Object.keys(datasheets)
     // XXX: timesheets 用来存放推送的工时对象的数组.
     const timesheets = new Array()
@@ -63,13 +63,16 @@ class DataEntry extends Taro.Component {
         const userInfo = Taro.getStorageSync('userInfo')
         const name = userInfo.nickName
         const number = userInfo.number
+        // XXX: belongto_team 用户所属班组的 id.
         const belongto_team = userInfo.belongto_team
 
         timesheets.push({...timesheet, name: name, number: number, belongto_team: belongto_team})
       })
 
+      console.log('dataEntry.jsx -> DataEntry.handleSubmit -> 72 -> timesheets', timesheets)
+
       Taro.request({
-        url: timesheetAPI,
+        url: timesheetsAPI,
         method: 'POST',
         headers: {
           'Content-type': 'application/json'
@@ -153,8 +156,8 @@ class DataEntry extends Taro.Component {
 const mapStateToProps = (state) => {
   return (
     {
-      formList: state.timesheet.formList,
-      datasheets: state.timesheet.datasheets
+      formList: state.timesheets.formList,
+      datasheets: state.timesheets.datasheets
     }
   )
 }

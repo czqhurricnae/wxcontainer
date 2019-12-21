@@ -14,11 +14,12 @@ import {
   deleteForm,
   stashForm,
   changeTask,
-  changeCalculatedTime
+  changeCalculatedTime,
+  clearDatasheets
 } from '../actions.jsx'
 import {
   tasksAPI,
-  segmentationsAPI,
+  segmentationsAPI
 }
 from '@constants/api'
 import DocsHeader from '../../doc-header/index.jsx'
@@ -423,7 +424,7 @@ class EntryForm extends Taro.Component {
 const mapStateToProps = (state) => {
   return (
     {
-      datasheets: state.timesheet.datasheets
+      datasheets: state.timesheets.datasheets
     }
   )
 }

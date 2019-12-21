@@ -35,7 +35,7 @@ export const tasksAPI = `${host}/api/tasks`;
 export const adminURL = `${host}/admin/`;
 
 // timesheet
-export const timesheetAPI = `${host}/api/timesheets`;
+export const timesheetsAPI = `${host}/api/timesheets`;
 export const approvedTimesheetsAPI = `${host}/api/approvedTimesheets`;
 
 // team

@@ -113,7 +113,7 @@ export default class Chart extends Component {
   }
 
   render() {
-    const { newData } = this.state
+    const { newData, disableSubmit } = this.state
     var option
 
     if (Object.keys(newData).length != 0) {
@@ -195,7 +195,7 @@ export default class Chart extends Component {
             </View>
           </Picker>
         </View>
-        <AtButton type='primary' onClick={this.handleFlush}>请求刷新</AtButton>
+        <AtButton type='primary' onClick={this.handleFlush} disabled={disableSubmit}>请求刷新</AtButton>
       </View>
     )
   }

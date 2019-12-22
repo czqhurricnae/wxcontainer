@@ -4,7 +4,7 @@ import { View } from '@tarojs/components'
 import { AtButton, AtMessage, AtNoticebar } from 'taro-ui'
 import DocsHeader from '../doc-header/index.jsx'
 import EntryForm from './views/entryForm.jsx'
-import { addEntryForm, clearDatasheets } from './actions.jsx'
+import { addEntryForm, clearAllTimesheets, deleleAllForms } from './actions.jsx'
 import store from '../../store.jsx'
 import { timesheetsAPI } from '@constants/api'
 
@@ -13,7 +13,8 @@ import './dataEntry.scss'
 class DataEntry extends Taro.Component {
   static defaultProps = {
     onAddEntryForm: () => {},
-    onClearDatasheets: () => {}
+    onClearDatasheets: () => {},
+    onDeleleAllForms: () => {}
   }
 
   constructor (props) {
@@ -122,6 +123,8 @@ class DataEntry extends Taro.Component {
               icon: 'none',
               duration: 2000
             })
+
+            this.props.onDeleleAllForms()
           }
           else {
             console.log(res.statusCode, res.data.message)
@@ -207,7 +210,10 @@ const mapDispatchToProps = (dispatch) => {
           dispatch(addEntryForm())
         },
       onClearDatasheets () {
-        dispatch(clearDatasheets())
+        dispatch(clearAllTimesheets())
+      },
+      onDeleleAllForms () {
+        dispatch(deleleAllForms())
       }
     }
   )

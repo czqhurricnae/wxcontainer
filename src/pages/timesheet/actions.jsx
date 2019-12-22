@@ -1,29 +1,35 @@
 import {
   ADD_ENTRY_FORM,
-  DELETE_FORM,
-  STASH_FORM,
+  DELETE_ENTRY_FORM,
+  STASH_ENTRY_FORM,
+  RESET_ENTRY_FROM,
   CHANGE_TASK,
   CHANGE_CALCULATEDTIME,
   CHANGE_AIRPLANE,
   CHANGE_COMPLETED,
   CHANGE_DATE,
   CHANGE_STASHED,
-  RESET_FORM,
-  CLEAR_DATASHEETS } from './actionTypes.jsx'
+  CLEAR_ALL_TIMESHEETS,
+  DELETE_ALL_FORMS } from './actionTypes.jsx'
 
 export const addEntryForm = () => ({
   type: ADD_ENTRY_FORM
 })
 
 export const deleteForm = (formID) => ({
-  type: DELETE_FORM,
+  type: DELETE_ENTRY_FORM,
   formID: formID
 })
 
 export const stashForm = (formID, datasheet) => ({
-  type: STASH_FORM,
+  type: STASH_ENTRY_FORM,
   formID: formID,
   datasheet: datasheet
+})
+
+export const resetForm = (formID) => ({
+  type: RESET_ENTRY_FROM,
+  formID: formID
 })
 
 export const changeTask = (formID, task, kind) => ({
@@ -63,11 +69,10 @@ export const changeStashed = (formID, stashed) => ({
   stashed: stashed
 })
 
-export const resetForm = (formID) => ({
-  type: RESET_FORM,
-  formID: formID
+export const clearAllTimesheets = () => ({
+  type: CLEAR_ALL_TIMESHEETS
 })
 
-export const clearDatasheets = () => ({
-  type: CLEAR_DATASHEETS
+export const deleleAllForms = () => ({
+  type: DELETE_ALL_FORMS
 })

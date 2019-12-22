@@ -1,15 +1,16 @@
 import {
   ADD_ENTRY_FORM,
-  DELETE_FORM,
-  STASH_FORM,
+  DELETE_ENTRY_FORM,
+  STASH_ENTRY_FORM,
+  RESET_ENTRY_FROM,
   CHANGE_TASK,
   CHANGE_CALCULATEDTIME,
   CHANGE_AIRPLANE,
   CHANGE_COMPLETED,
   CHANGE_DATE,
   CHANGE_STASHED,
-  RESET_FORM,
-  CLEAR_DATASHEETS } from './actionTypes.jsx'
+  CLEAR_ALL_TIMESHEETS,
+  DELETE_ALL_FORMS } from './actionTypes.jsx'
 
 const initialState = { datasheets: {}, formList: [1, 2] }
 
@@ -24,7 +25,8 @@ export default (state = initialState, action) => {
       )
     }
 
-    case DELETE_FORM: {
+    // XXX: 删除某一个表单和其对应的数据.
+    case DELETE_ENTRY_FORM: {
       const formID = action.formID
       const obj = JSON.parse(JSON.stringify(state.datasheets))
 
@@ -38,7 +40,7 @@ export default (state = initialState, action) => {
       )
     }
 
-    case STASH_FORM: {
+    case STASH_ENTRY_FORM: {
       const formID = action.formID
       const datasheet = action.datasheet
       const obj = JSON.parse(JSON.stringify(state.datasheets))
@@ -51,6 +53,21 @@ export default (state = initialState, action) => {
       // 旧数据覆盖.
 
       obj[formID] = { ...obj[formID], ...datasheet }
+
+      return (
+        {
+          formList: [...state.formList],
+          datasheets: obj
+        }
+      )
+    }
+
+    // XXX: 重置某一个表单.
+    case RESET_ENTRY_FROM: {
+      const formID = action.formID
+      const obj = JSON.parse(JSON.stringify(state.datasheets))
+
+      obj[formID] = {}
 
       return (
         {
@@ -151,25 +168,21 @@ export default (state = initialState, action) => {
       )
     }
 
-    case RESET_FORM: {
-      const formID = action.formID
-      const obj = JSON.parse(JSON.stringify(state.datasheets))
-
-      obj[formID] = {}
-
-      return (
-        {
-          formList: [...state.formList],
-          datasheets: obj
-        }
-      )
-    }
-
-    case CLEAR_DATASHEETS: {
+    // XXX: 清空当前显示所有表单的工时数据, 不会删除表单.
+    case CLEAR_ALL_TIMESHEETS: {
       return (
         {
           formList: [...initialState.formList],
           datasheets: { ...initialState.datasheets }
+        }
+      )
+    }
+
+    case DELETE_ALL_FORMS: {
+      return (
+        {
+          formList: [],
+          datasheets: {}
         }
       )
     }

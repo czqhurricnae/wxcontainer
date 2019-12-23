@@ -49,7 +49,7 @@ class Index extends Taro.Component {
 
             Taro.atMessage({
               'message': `与后台服务器连接时出现错误, 错误信息为: ${error.errMsg}.`,
-              'type': 'warning',
+              'type': 'warning'
             })
           })
       })
@@ -58,7 +58,7 @@ class Index extends Taro.Component {
 
         Taro.atMessage({
           'message': '微信登录失败, 请检查您的网络连接!',
-          'type': 'error',
+          'type': 'error'
         })
       })
   }
@@ -124,7 +124,7 @@ class Index extends Taro.Component {
 
             Taro.atMessage({
               'message': `与后台服务器连接时出现错误, 错误信息为: ${error.errMsg}!`,
-              'type': 'warning',
+              'type': 'warning'
             })
           })
       }
@@ -134,7 +134,7 @@ class Index extends Taro.Component {
 
         Taro.atMessage({
           'message': '检查 sessionKey 出现错误, 请关闭小程序后重新登录!',
-          'type': 'warning',
+          'type': 'warning'
         })
       })
 

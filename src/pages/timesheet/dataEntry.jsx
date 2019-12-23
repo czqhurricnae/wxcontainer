@@ -80,9 +80,11 @@ class DataEntry extends Taro.Component {
         }
         else {
           if (newData[item.stashed] === undefined) {
-            newData[item.stashed] = [];
+            // newData[item.stashed] = []
+            newData[item.stashed] = new Array()
           }
-          newData[item.stashed].splice(newData[item.stashed].length, 0, item.formID);
+          // newData[item.stashed].splice(newData[item.stashed].length, 0, item.formID)
+          newData[item.stashed].push(item.formID)
         }
       }
 
@@ -131,7 +133,7 @@ class DataEntry extends Taro.Component {
 
             Taro.atMessage({
               'message': `提交时出现错误,错误信息为 ${res.data.message}!`,
-              'type': 'warning',
+              'type': 'warning'
             })
           }
         })
@@ -140,7 +142,7 @@ class DataEntry extends Taro.Component {
 
           Taro.atMessage({
             'message': `提交时出现错误, 错误信息为: ${error.errMsg}!`,
-            'type': 'warning',
+            'type': 'warning'
           })
         })
     }

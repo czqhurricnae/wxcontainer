@@ -107,7 +107,7 @@ export default class Chart extends Component {
 
         Taro.atMessage({
           'message': `与后台服务器连接时出现错误, 错误信息为: ${error.errMsg}!`,
-          'type': 'warning',
+          'type': 'warning'
         })
       })
   }

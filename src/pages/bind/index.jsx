@@ -73,7 +73,7 @@ class Bind extends Component {
 
         Taro.atMessage({
           'message': '从后台获取标准班组列表失败!',
-          'type': 'warning',
+          'type': 'warning'
         })
       })
   }
@@ -170,7 +170,7 @@ class Bind extends Component {
 
             Taro.atMessage({
               'message': `与后台服务器连接时出现错误, 错误信息为: ${error.errMsg}!`,
-              'type': 'warning',
+              'type': 'warning'
             })
           })
       }

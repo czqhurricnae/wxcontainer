@@ -10,6 +10,7 @@ import IdImg from '../../assets/images/ID.svg'
 import maintenanceImg from '../../assets/images/maintenance.svg'
 import documentationImg from '../../assets/images/documentation.svg'
 import administratorImg from '../../assets/images/administrator.svg'
+import statisticsImg from '../../assets/images/statistics.svg'
 
 import './index.scss'
 
@@ -31,6 +32,9 @@ const dataTimesheet = [
 const dataUser= [
   {
     link: '/pages/chart/index'
+  },
+  {
+    link: '/pages/statistics/index'
   },
   {
     link: '/pages/admin/index'
@@ -131,7 +135,11 @@ export default class Index extends Taro.Component {
               [
                 {
                   image: chartImg,
-                  value: '工时图示'
+                  value: '个人工时图示'
+                },
+                {
+                  image: statisticsImg,
+                  value: '班组工时月份统计'
                 },
                 {
                   image: administratorImg,

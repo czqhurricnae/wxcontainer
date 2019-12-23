@@ -1,0 +1,62 @@
+.doc-body {
+  background: #fff;
+}
+
+.picker {
+  &__item {
+    position:relative;
+    display:-webkit-box;
+    display:-webkit-flex;
+    display:-ms-flexbox;
+    display:flex;
+    -webkit-box-pack:justify;
+    -webkit-justify-content:space-between;
+    -ms-flex-pack:justify;
+    justify-content:space-between;
+    padding:24rpx;
+
+    &::before,
+    &::after {
+      content:'';
+      position:absolute;
+      left:0;
+      right:0;
+      -webkit-transform:scaleY(.5);
+      -ms-transform:scaleY(.5);
+      transform:scaleY(.5);
+      border-bottom:1PX solid #d6e4ef;
+      -webkit-transform-origin:center;
+      -ms-transform-origin:center;
+      transform-origin:center;
+      -webkit-box-sizing:border-box;
+      box-sizing:border-box;
+      pointer-events:none;
+    }
+
+    &::before {
+      top:0;
+      bottom:auto;
+    }
+
+    &::after {
+      top:auto;
+      bottom:0;
+    }
+
+    &__label &__value {
+      color:#333;
+      font-size:32rpx;
+      line-height:1.5;
+    }
+
+    &__value {
+      color:#999;
+    }
+  }
+}
+
+.panel {
+  &__button {
+    margin-top: 32px;
+  }
+}

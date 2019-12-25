@@ -125,6 +125,7 @@ export default class Chart extends Component {
 
           if (!rawData) {
             this.setState({
+              rawData: [],
               showToast: true,
               toastText: '从后台获取班组工时月份统计数据为空.'
             })

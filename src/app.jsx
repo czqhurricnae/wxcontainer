@@ -29,7 +29,8 @@ class App extends Component {
       'pages/chart/index',
       'pages/user/index',
       'pages/bind/index',
-      'pages/statistics/index'
+      'pages/statistics/index',
+      'pages/chapter/index'
     ],
 
     window: {

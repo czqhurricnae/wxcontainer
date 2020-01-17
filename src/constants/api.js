@@ -41,3 +41,6 @@ export const statisticsAPI = `${host}/api/statistics`;
 
 // team
 export const teamsAPI = `${host}/api/teams`;
+
+// chapter
+export const chaptersAPI = `${host}/api/chapters`;

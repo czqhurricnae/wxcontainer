@@ -11,6 +11,7 @@ import maintenanceImg from '../../assets/images/maintenance.svg'
 import documentationImg from '../../assets/images/documentation.svg'
 import administratorImg from '../../assets/images/administrator.svg'
 import statisticsImg from '../../assets/images/statistics.svg'
+import chapterImg from '../../assets/images/chapter.svg'
 
 import './index.scss'
 
@@ -20,6 +21,9 @@ const dataSearch = [
   },
   {
     link: '/pages/documents/index'
+  },
+  {
+    link: '/pages/chapter/index'
   }
 ]
 
@@ -102,6 +106,10 @@ export default class Index extends Taro.Component {
                   {
                     image: documentationImg,
                     value: '文档查询'
+                  },
+                  {
+                    image: chapterImg,
+                    value: '章节号查询'
                   }
                 ]
               }onClick={this.handleClickSearch}
